@@ -27,7 +27,7 @@ alias please='sudo'
 # End of Aliases
 
 # Bash prompt
-export PS1="[\[\e[31m\]\u\[\e[m\]@\[\e[32m\]\h\[\e[m\]]: [\[\e[36m\]\w\[\e[m\]\[\e[37m\]]\[\e[m\] "
+export PS1="[\[\e[31m\]\u\[\e[m\]@\[\e[32m\]\h\[\e[m\]]|[\[\e[36m\]\w\[\e[m\]\[\e[37m\]]\[\e[m\]: "
 
 # history config
 export HISTFILESIZE=20000
