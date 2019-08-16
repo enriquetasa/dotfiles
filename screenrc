@@ -1,0 +1,8 @@
+defscrollback 20000
+termcapinfo xterm ti@:te@
+vbell off
+maptimeout 10
+startup_message off
+hardstatus alwayslastline
+hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW}|%{KY}%101`%{KW}|%D %M %d %Y%{= Kc} %C%A%{-}'
+
