@@ -1,0 +1,67 @@
+{
+  // TODO - include extension installs
+
+  // tabs
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+
+  // formatting
+  "editor.formatOnSave": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+
+  // font
+  "editor.fontFamily": "Hack",
+  "editor.fontLigatures": false,
+
+  //saving
+  "files.autoSave": "afterDelay",
+
+  // explorer
+  "explorer.sortOrder": "type",
+
+  // viewing
+  "editor.mouseWheelZoom": true,
+  "editor.wordWrap": "on",
+  "editor.cursorSmoothCaretAnimation": true,
+
+  // exclude files
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/.tags": true,
+    "**/.bash_history": true,
+    "**/.viminfo": true,
+    "**/*.tar.gz": true,
+    "**/*.old": true,
+    "**/*.orig": true,
+    ".config": true,
+    ".cache": true,
+    ".gnome2": true,
+    ".mozilla": true,
+    ".pki": true,
+    ".pyenv": true,
+    ".vim": true,
+    ".vnc": true,
+    ".vscode/ipch": true,
+    ".vscode-server": true,
+    "backup": true,
+    "bin": true,
+    "cfg_loc": true,
+    "data": true,
+    "database": true,
+    "db_recovery": true,
+    "dev": true,
+    "oel": true,
+    "logging": true,
+    "registry": true,
+    "source/*.enummap": true,
+    "tmp": true,
+    "work": true
+  },
+}
+

@@ -1,138 +1,98 @@
-" PLUGIN CONFIGURATION "
-" I currently use a plugin manager called 'plugged'
-" Install plug if it isn't installed
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
+" DAI specific stuff """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Specify a directory for plugins
-call plug#begin('~/.config/nvim/plugged/')
+:if has("terminfo")
+:  set t_Co=8
+:  set t_Sf=^[[3%p1%dm
+:  set t_Sb=^[[4%p1%dm
+:else
+:  set t_Co=8
+:  set t_Sf=^[[3%dm
+:  set t_Sb=^[[4%dm
+:endif
+:set t_kb=^H
 
-" Specify a directory for plugins
-call plug#begin()
+set t_kb=^V<BS>
 
-" plugin: jedi (autocompleting)
-Plug 'davidhalter/jedi-vim'
+map <F8> :!ut_ctags<CR>
+map! <F8> <ESC>:!ut_ctags<CR>
+set tags=./tags,./TAGS,tags,TAGS,.tags,~/.tags,~/.TAGS
 
-" plugin: polyglot (syntax highlighting)
-Plug 'sheerun/vim-polyglot'
+map <F9> :!ut_lib %<CR>
+map! <F9> <ESC>:!ut_lib %<CR>
+map <F10> :!ut_build %<CR>
+map! <F10> <ESC>:!ut_build %<CR>
+map <F11> :!ut_web<CR>
+map! <F11> <ESC>:!ut_web<CR>
 
-" plugin: airline (status line)
-Plug 'vim-airline/vim-airline' " airline status line
-Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme = 'powerlineish'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
-let g:airline#extensions#virtualenv#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+" Only do this part when compiled with support for autocommands.
+"if has("autocmd")
 
-" plugin: afterglow (theme)
-Plug'danilo-augusto/vim-afterglow'
-let g:airline_theme='afterglow'
+  autocmd BufRead web_* map <F10> :!ut_lib % && ut_build web_om<CR>
+  autocmd BufRead web_* map! <F10> <ESC>:!ut_lib % && ut_build web_om<CR>
 
-" plugin: nerdtree (file tree)
-Plug 'scrooloose/nerdtree' " shows a file tree
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
-" start nerdtree if we bring up vim without specifying a file
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+  autocmd BufRead web_roi* map <F10> :!ut_lib % && ut_roi<CR>
+  autocmd BufRead web_roi* map! <F10> <ESC>:!ut_lib % && ut_roi<CR>
+
+  autocmd BufRead rdt* map <F10> :!ut_lib % && ut_build rdt_control<CR>
+  autocmd BufRead rdt* map! <F10> <ESC>:!ut_lib % && ut_build rdt_control<CR>
+
+  autocmd BufRead web_moi* map <F10> :!ut_lib % && ut_moi<CR>
+  autocmd BufRead web_moi* map! <F10> <ESC>:!ut_lib % && ut_moi<CR>
+
+"endif  has("autocmd")
 
 
-" plugin: fugitive (git integration)
-Plug 'tpope/vim-fugitive' " git integration in file
+map <C-F> :!grep -n <cword> *.c *.h > .vimfind<CR> :10sp .vimfind<CR> <C-W>r<CR>
 
-" pluginS: blacK & iSort (python language tools)
-Plug 'psf/black', { 'tag': '19.10b0' }
-Plug 'fisadev/vim-isort'
-" run isort and black on save
-augroup black_on_save
-  autocmd!
-  autocmd BufWritePre *.py Black
-  autocmd BufWritePre *.py Isort
-augroup end
+:filetype plugin on
 
-call plug#end() 
+if has("autocmd")
 
-" END PLUGINS CONFIGURATION "
+  autocmd BufRead *.plugin set filetype=plugin
+  autocmd BufRead sdf.txt set filetype=sdf
 
+endif " has("autocmd")
 
-" EDITOR CONFIGURATION "
-" code
-filetype plugin indent on
-set nocompatible
-set shiftwidth=2        " indent width
+" end DAI specific stuff """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" colours
+syntax enable
+
+" editor stuff
 set softtabstop=2       " tabs equal 2 space 
-set expandtab           " inserts spaces when tab is pressed
-set smartindent         " indent 'intelligently' 
-set clipboard=unnamedplus "use systemclipboard when available
-
-" search
-set ignorecase          " ignore and smart case help make search 
-set smartcase           " non-case-sensitive unless you put caps in there
-set hlsearch            " highlight all search matches
-
-" display
-syntax on
-colorscheme afterglow
-set showcmd             " show command in bottom bar
+set expandtab
 set number              " show line numbers
-set ruler               " show cursor position in line numbers
-set showmatch           " match brackets with colours
-set display+=lastline   " as much as possible of the last line will display
-set backspace=indent,eol,start  " backspace works normally
-set scrolloff=10        " displays 10 lines under scroll
-set splitright          " display split files on the right by default
-
-" saving
-set confirm             " asks for confirmation when exiting
-set undofile            " persistundo history across sessions
-set backup              " create backup files before overwriting
-set undodir=~/.config/nvim/code/undo// 
-set backupdir=~/.config/nvim/code/backup//
-set directory=~/.config/nvim/code/swap//
-
-" folding
-set nofoldenable        " do not display folded code on open
-set foldmethod=indent   " fold methodology is by indentation
-set foldnestmax=10
-set foldlevel=2
-
-" title stuff
+set showcmd             " show command in bottom bar
+set autoindent
+set display+=lastline
+set wrap
+set ruler
 set title
-set titlestring=vim:\ %-25.55F\ %a%r%m titlelen=70
+set confirm
+set lazyredraw
+set backspace=indent,eol,start
+set wildmenu
+set cursorline
+set showmatch
+set nocompatible
+set sm
+set sw=2
+set noai
+set pastetoggle=<F12>
+set bs=2
+set complete=.,w,b,u,t,]
+set hlsearch
+set ignorecase smartcase
+set incsearch
 
-" END EDITOR CONFIGURATION "
 
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
+" remaps
+nnoremap ; :
 
-" ctags
-set tags=./tags;/
-
-" KEY MAPPINGS "
-
-" Map Cmd+LeftArrow to jump back
-nnoremap <D-Left> <C-t>
-
-" Map Cmd+RightArrow to jump fwd
-nnoremap <D-Right> <C-]>
-
-" ':v' instead of ':vs' for vertical split
-cnoreabbrev <expr> v (getcmdtype() == ':' && getcmdline() ==# 'v') ? 'vs' : 'v'
-
-" Nerdtree toggle with Ctrl+N
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-" END KEY MAPPINGS "
+" Mistypes
+:command W w
+:command Bd bd
+:command Wq wq
+:command Q q
+:command WQ wq
 
