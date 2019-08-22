@@ -6,7 +6,7 @@
   "editor.detectIndentation": false,
 
   // font
-  "editor.fontFamily": "Fira Code",
+  "editor.fontFamily": "Hack",
   "editor.fontLigatures": true,
 
   //saving
@@ -17,4 +17,7 @@
 
   // newline trim
   "files.trimFinalNewlines": true
+  
+  // lol jk
+  //"editor.fontFamily": "Comic Sans MS",
 }
