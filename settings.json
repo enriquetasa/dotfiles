@@ -1,0 +1,20 @@
+// visual studio code settings file
+
+{    
+  // tabs
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+
+  // font
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+
+  //saving
+  "files.autoSave": "afterDelay",
+
+  // explorer
+  "explorer.sortOrder": "type",
+
+  // newline trim
+  "files.trimFinalNewlines": true
+}
