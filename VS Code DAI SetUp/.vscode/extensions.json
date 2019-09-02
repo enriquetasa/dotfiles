@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "ms-vscode-remote.vscode-remote-extensionpack",
+    "wayou.vscode-todo-highlight",
+    "coenraads.bracket-pair-colorizer",
+    "msjsdiag.debugger-for-chrome",
+    "ms-vscode.cpptools",
+    "shakram02.bash-beautify",
+    "cschlosser.doxdocgen",
+    "mrcrowl.hg",
+    "webfreak.debug",
+    "mutantdino.resourcemonitor",
+    "shardulm94.trailing-spaces",
+    "dotjoshjohnson.xml",
+    "ms-python.python",
+    "ibm.output-colorizer"
+  ]
+}

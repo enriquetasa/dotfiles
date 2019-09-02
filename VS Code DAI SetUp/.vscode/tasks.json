@@ -1,0 +1,98 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    /*    {
+      "label": "ut_lib",
+      "type": "shell",
+      "command": "ut_lib ${relativeFile}",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+    {
+      "label": "ut_build",
+      "type": "shell",
+      "command": "ut_build ${relativeFile}",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+    {
+      "label": "ut_build web_moi",
+      "type": "shell",
+      "command": "cd $HOME/source; ut_build web_moi",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+    {
+      "label": "ut_web",
+      "type": "shell",
+      "command": "cd $HOME/source; ut_web",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    }, */
+    {
+      "label": "make",
+      "type": "shell",
+      "command": "cd ${fileDirname}; make",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+    {
+      "label": "make API",
+      "type": "shell",
+      "command": "cd $SRC; make web_api_cgi",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+    {
+      "label": "make binary",
+      "type": "shell",
+      "command": "cd ${fileDirname}; make ${fileBasenameNoExtension}",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+    {
+      "label": "make clean",
+      "type": "shell",
+      "command": "cd ${fileDirname}; make clean",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true,
+        "group": "build"
+      }
+    },
+  ]
+}
