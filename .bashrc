@@ -28,7 +28,7 @@ alias rm='rm -iv'
 alias please='sudo'
 
 # always use cgdb
-alias gdb ='cgdb'
+alias gdb='cgdb'
 
 # End of Aliases ########################################################################################
 
