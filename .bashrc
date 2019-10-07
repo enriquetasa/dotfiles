@@ -1,4 +1,9 @@
-# Aliases
+# DAI Specific stuff ##################################################################################
+alias rebuild="sm_sysman noninteractive shutdown && ut_sys_build && sm_startup --yes-to-all"
+. ~/source/ut_profile.sh
+#######################################################################################################
+
+# Aliases #############################################################################################
 
 # ls aliases
 alias ll='ls -alh'
@@ -7,8 +12,9 @@ alias s='ls'
 alias sl='ls'
 alias ls='ls --color=auto'
 
-# grep aliases
+# grep & ag aliases
 alias grep='grep --color=auto'
+alias ag='ag --path-to-ignore ~/.ignore'
 
 # cd aliases
 alias ..='cd ..'
@@ -20,11 +26,11 @@ alias rm='rm -iv'
 
 # classics
 alias please='sudo'
-#I don know why but I'm getting errors on the next two lines in Ubuntu
-#alias bashrc=vi ~/.bashrc
-#alias vimrc=vi ~/.vimrc
 
-# End of Aliases
+# always use cgdb
+alias gdb ='cgdb'
+
+# End of Aliases ########################################################################################
 
 # Bash prompt
 export PS1="[\[\e[31m\]\u\[\e[m\]@\[\e[32m\]\h\[\e[m\]]|[\[\e[36m\]\w\[\e[m\]\[\e[37m\]]\[\e[m\]: "
