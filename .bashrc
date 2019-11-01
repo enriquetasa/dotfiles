@@ -45,6 +45,24 @@ shopt -s cmdhist
 HISTCONTROL=ignoredups
 export HISTIGNORE="&:ls:[bf]g:exit"
 
+# Daily Notes Aliases
+dn() {
+  echo " * $1" >> ~/dn/$(date "+%Y-%m-%d")
+}
+
+dno() {
+  echo " * $2" >> ~/dn/$1
+}
+
+dnt() {
+  echo $(date "+%Y-%m-%d")
+  cat ~/dn/$(date "+%Y-%m-%d")
+}
+
+dnview() {
+  find ~/dn/$1* -type f -exec basename {} \; -exec cat {} \;
+}
+
 if [ "$TERM" = "linux" ]; then
     echo -en "\e]P0073642" #black
     echo -en "\e]P1DC322F" #darkred
