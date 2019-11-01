@@ -47,11 +47,11 @@ export HISTIGNORE="&:ls:[bf]g:exit"
 
 # Daily Notes Aliases
 notas() {
-  echo " -> $1" >> /notas/$(date "+%Y-%m-%d")
+  echo " $(date +"%T"): $1" >> /notas/$(date "+%Y-%m-%d")
 }
 
 notasfecha() {
-  echo " -> $2" >> /notas/$1
+  echo " $(date +"%T"): $2" >> /notas/$1
 }
 
 notashoy() {
