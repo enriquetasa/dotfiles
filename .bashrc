@@ -1,6 +1,6 @@
 # DAI Specific stuff ##################################################################################
-alias rebuild="sm_sysman noninteractive shutdown && ut_sys_build && sm_startup --yes-to-all"
 . ~/source/ut_profile.sh
+alias rebuild="sm_sysman noninteractive shutdown && ut_sys_build && sm_startup --yes-to-all"
 #######################################################################################################
 
 # Aliases #############################################################################################
@@ -24,7 +24,7 @@ alias ....='cd ../../..'
 # rm aliases
 alias rm='rm -iv'
 
-# classics
+# classic
 alias please='sudo'
 
 # always use cgdb
@@ -46,21 +46,21 @@ HISTCONTROL=ignoredups
 export HISTIGNORE="&:ls:[bf]g:exit"
 
 # Daily Notes Aliases
-dn() {
-  echo " * $1" >> ~/dn/$(date "+%Y-%m-%d")
+notas() {
+  echo " * $1" >> /notas/$(date "+%Y-%m-%d")
 }
 
-dno() {
-  echo " * $2" >> ~/dn/$1
+notasfecha() {
+  echo " * $2" >> /notas/$1
 }
 
-dnt() {
+notashoy() {
   echo $(date "+%Y-%m-%d")
-  cat ~/dn/$(date "+%Y-%m-%d")
+  cat /notas/$(date "+%Y-%m-%d")
 }
 
-dnview() {
-  find ~/dn/$1* -type f -exec basename {} \; -exec cat {} \;
+notasview() {
+  find /notas/$1* -type f -exec basename {} \; -exec cat {} \;
 }
 
 if [ "$TERM" = "linux" ]; then
