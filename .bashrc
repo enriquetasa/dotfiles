@@ -45,23 +45,31 @@ shopt -s cmdhist
 HISTCONTROL=ignoredups
 export HISTIGNORE="&:ls:[bf]g:exit"
 
-# Daily Notes Aliases
 notas() {
-  echo " $(date +"%T"): $1" >> /notas/$(date "+%Y-%m-%d")
+  git pull https://github.com/enriquetasa/notas.git
+  echo " $(date +"%T"): $1" >> /notas/notas/$(date "+%Y-%m-%d")
 }
 
 notasfecha() {
-  echo " $(date +"%T"): $2" >> /notas/$1
+  echo " $(date +"%T"): $2" >> /notas/notas/$1
 }
 
 notashoy() {
   echo $(date "+%Y-%m-%d")
-  cat /notas/$(date "+%Y-%m-%d")
+  cat /notas/notas/$(date "+%Y-%m-%d")
 }
 
 notasview() {
-  find /notas/$1* -type f -exec basename {} \; -exec cat {} \;
+  find /notas/notas/$1* -type f -exec basename {} \; -exec cat {} \;
 }
+
+notassync() {
+  git pull https://github.com/enriquetasa/notas.git
+  git add *
+  git commit -m "`date +'%Y-%m-%d'`"
+  git push
+}
+
 
 if [ "$TERM" = "linux" ]; then
     echo -en "\e]P0073642" #black
