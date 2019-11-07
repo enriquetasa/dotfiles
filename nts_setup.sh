@@ -1,4 +1,4 @@
 cd /
-git clone https://github.com/enriquetasa/notas.git
-chmod -R 777 notas 
-cat /notas/notas.sh >> ~/.bashrc
+git clone https://github.com/enriquetasa/nts.git
+chmod -R 777 nts 
+cat /nts/nts.sh >> ~/.bashrc
