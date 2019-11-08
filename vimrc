@@ -5,11 +5,11 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin('/tasa_utilities/installs/')
 
-"Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 "Plugin 'octol/vim-cpp-enhanced-highlight'
 "Plugin 'scrooloose/syntastic'
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'c.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'c.vim'
 "Plugin 'tpope/vim-surround'
 Plugin 'itchyny/lightline.vim'
 "Plugin 'junegunn/fzf'
@@ -104,6 +104,8 @@ set ignorecase smartcase
 set incsearch
 set wildmode=longest,list
 set laststatus=2
+set noshowmode
+set scrolloff=10
 
 " remaps
 nnoremap ; :
