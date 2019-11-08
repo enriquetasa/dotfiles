@@ -1,4 +1,22 @@
-" DAI specific stuff """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin stuff
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin('/tasa_utilities/installs/')
+
+"Plugin 'scrooloose/nerdtree'
+"Plugin 'octol/vim-cpp-enhanced-highlight'
+"Plugin 'scrooloose/syntastic'
+"Plugin 'altercation/vim-colors-solarized'
+"Plugin 'c.vim'
+"Plugin 'tpope/vim-surround'
+Plugin 'itchyny/lightline.vim'
+"Plugin 'junegunn/fzf'
+
+call vundle#end()            " required
+
+" DAI specific stuff """""""""""""""""""""""""""""""""""""""""""""""""
 
 :if has("terminfo")
 :  set t_Co=8
@@ -53,7 +71,7 @@ if has("autocmd")
 
 endif " has("autocmd")
 
-" end DAI specific stuff """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" end DAI specific stuff """""""""""""""""""""""""""""""""""""
 
 " colours
 syntax enable
@@ -84,7 +102,8 @@ set complete=.,w,b,u,t,]
 set hlsearch
 set ignorecase smartcase
 set incsearch
-
+set wildmode=longest,list
+set laststatus=2
 
 " remaps
 nnoremap ; :
@@ -95,4 +114,15 @@ nnoremap ; :
 :command Wq wq
 :command Q q
 :command WQ wq
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ }
+
+
+
 
