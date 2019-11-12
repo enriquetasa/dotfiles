@@ -77,7 +77,7 @@ set softtabstop=2       " tabs equal 2 space
 set expandtab
 set number              " show line numbers
 set showcmd             " show command in bottom bar
-set autoindent
+set smartindent
 set display+=lastline
 set wrap
 set ruler
