@@ -122,4 +122,4 @@ let g:lightline = {
   \ }
 
 map <F1> :NERDTreeToggle<CR>
-map <C-Q> :FZF<CR>
+map <F2> :FZF<CR>
