@@ -75,6 +75,7 @@ endif " has("autocmd")
 
 " colours
 syntax enable
+set background=dark
 
 " editor stuff
 set softtabstop=2       " tabs equal 2 space 
@@ -122,7 +123,7 @@ if !has('gui_running')
 endif
 
 let g:lightline = {
-  \ 'colorscheme': 'wombat',
+  \ 'colorscheme': 'one',
   \ }
 
 
