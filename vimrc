@@ -6,13 +6,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin('/tasa_utilities/installs/')
 
 Plugin 'scrooloose/nerdtree'
-"Plugin 'octol/vim-cpp-enhanced-highlight'
-"Plugin 'scrooloose/syntastic'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'c.vim'
-"Plugin 'tpope/vim-surround'
 Plugin 'itchyny/lightline.vim'
-"Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf'
 
 call vundle#end()            " required
 
@@ -126,6 +121,5 @@ let g:lightline = {
   \ 'colorscheme': 'one',
   \ }
 
-
-
-
+map <F1> :NERDTreeToggle<CR>
+map <C-Q> :FZF<CR>
