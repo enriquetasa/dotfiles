@@ -5,7 +5,6 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin('/tasa_utilities/installs/')
 
-Plugin 'scrooloose/nerdtree'
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
 
@@ -121,5 +120,4 @@ let g:lightline = {
   \ 'colorscheme': 'one',
   \ }
 
-map <F1> :NERDTreeToggle<CR>
-map <F2> :FZF<CR>
+map <F1> :FZF<CR>
