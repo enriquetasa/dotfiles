@@ -5,5 +5,7 @@ cp /tasa_utilities/cgdbrc ~/.cgdb/
 sh /tasa_utilities/nts_setup.sh
 cp /tasa_utilities/ignore ~/.ignore
 cp /tasa_utilities/bash_profile ~/.bash_profile
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+if [ ! -d ~/.vim/bundle/]; then
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
 
