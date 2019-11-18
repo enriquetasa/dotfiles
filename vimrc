@@ -104,6 +104,7 @@ set scrolloff=10
 
 " remaps
 nnoremap ; :
+map <F1> :FZF<CR>
 
 " Mistypes
 :command W w
@@ -119,5 +120,3 @@ endif
 let g:lightline = {
   \ 'colorscheme': 'one',
   \ }
-
-map <F1> :FZF<CR>
