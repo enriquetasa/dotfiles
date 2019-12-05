@@ -7,6 +7,7 @@ call vundle#begin('/tasa_utilities/installs/')
 
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
+Plugin 'valloric/youcompleteme'
 
 call vundle#end()            " required
 
@@ -120,3 +121,5 @@ endif
 let g:lightline = {
   \ 'colorscheme': 'one',
   \ }
+  
+com! FormatJSON %!python -m json.tool
