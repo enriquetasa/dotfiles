@@ -12,6 +12,8 @@ alias s='ls'
 alias sl='ls'
 alias ls='ls --color=auto'
 alias cls='clear && ls'
+alias python='python3'
+alias pip='pip3'
 
 # grep & ag aliases
 alias grep='grep --color=auto'
@@ -70,20 +72,16 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export TERM=xterm-256color
 
+clear
 echo "    
 
-          Caminante, son tus huellas
-          el camino y nada más;
-          Caminante, no hay camino,
-          se hace camino al andar.
-          Al andar se hace el camino,
-          y al volver la vista atrás
-          se ve la senda que nunca
-          se ha de volver a pisar.
-          Caminante no hay camino
-          sino estelas en la mar.
 
-          - Antonio Machado
+
+        LA UNIMENTE
+
+
+
+
 
 
 "
