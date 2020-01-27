@@ -42,7 +42,6 @@ map! <F11> <ESC>:!ut_web<CR>
 
 "endif  has("autocmd")
 
-
 map <C-F> :!grep -n <cword> *.c *.h > .vimfind<CR> :10sp .vimfind<CR> <C-W>r<CR>
 
 :filetype plugin on
@@ -59,6 +58,9 @@ endif " has("autocmd")
 " colours
 syntax enable
 set background=dark
+"let g:solarized_termtrans = 1
+let g:solarized_termcolors=256
+set t_Co=256
 colorscheme solarized
 
 " editor stuff
