@@ -1,14 +1,11 @@
 {
-  // TODO - include extension installs
-
   // tabs
-  "editor.tabSize": 2,
-  "editor.detectIndentation": false,
+  "editor.tabSize": 4,
   "editor.insertSpaces": true,
 
   // formatting
   "editor.formatOnSave": true,
-  "files.trimFinalNewlines": true,
+  "editor.rulers": [80],
   "files.insertFinalNewline": true,
 
   // font
@@ -62,6 +59,5 @@
     "source/*.enummap": true,
     "tmp": true,
     "work": true
-  },
+  }
 }
-

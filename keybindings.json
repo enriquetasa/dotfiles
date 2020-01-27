@@ -5,8 +5,7 @@
     "when": "textInputFocus && !editorReadonly"
   },
   {
-    "key": "ctrl+shift+k",
-    "command": "-editor.action.deleteLines",
-    "when": "textInputFocus && !editorReadonly"
+    "key": "insert insert",
+    "command": "workbench.action.terminal.toggleTerminal"
   }
 ]
