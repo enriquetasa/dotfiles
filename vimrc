@@ -3,7 +3,7 @@ filetype off " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin('/tasa_utilities/installs/')
+call vundle#begin()
 
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
@@ -96,11 +96,12 @@ set showmatch
 set nocompatible
 set sm                  " matching braces
 set pastetoggle=<F12>
-set complete=.,w,b,u,t,i]
+set complete=.,w,b,u,t,]
 set hlsearch
 set incsearch
 set laststatus=2
 set scrolloff=10
+set noai
 
 " remaps
 nnoremap ; :
