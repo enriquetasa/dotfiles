@@ -1,6 +1,6 @@
-chmod -R 777 /tasa_utilities
+chmod -R 777 /tasa_utilities/
 echo ". /tasa_utilities/bashrc" > ~/.bashrc
-echo ". /tasa_utilities/vimrc" > ~/.vimrc
+echo ":source /tasa_utilities/vimrc" > ~/.vimrc
 echo ". /tasa_utilities/screenrc" > ~/.screenrc
 echo ". /tasa_utilities/cgbdrc" > ~/.cgbdrc
 echo ". /tasa_utilities/ignore" > ~/.ignorerc
