@@ -8,6 +8,7 @@ call vundle#begin()
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
 Plugin 'valloric/youcompleteme'
+Plugin 'altercation/vim-colors-solarized'
 
 call vundle#end()            " required
 
@@ -71,6 +72,7 @@ endif " has("autocmd")
 " colours
 syntax enable
 set background=dark
+colorscheme solarized
 
 " editor stuff
 set shiftwidth=4
@@ -117,5 +119,5 @@ map <F1> :FZF<CR>
 let g:lightline = {
   \ 'colorscheme': 'one',
   \ }
-  
+
 com! FormatJSON %!python -m json.tool
