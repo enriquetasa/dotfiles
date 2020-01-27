@@ -1,4 +1,3 @@
-chmod -R 777 /tasa_utilities/
 echo ". /tasa_utilities/bashrc" > ~/.bashrc
 echo ":source /tasa_utilities/vimrc" > ~/.vimrc
 echo ". /tasa_utilities/screenrc" > ~/.screenrc
