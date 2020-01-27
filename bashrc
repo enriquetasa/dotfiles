@@ -73,15 +73,3 @@ export LSCOLORS=ExFxBxDxCxegedabagacad
 export TERM=xterm-256color
 
 clear
-echo "    
-
-
-
-        LA UNIMENTE
-
-
-
-
-
-
-"
