@@ -1,5 +1,5 @@
 " Plugin stuff
-filetype off                  " required
+filetype off " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -73,34 +73,33 @@ syntax enable
 set background=dark
 
 " editor stuff
-set softtabstop=2       " tabs equal 2 space 
-set expandtab
+set shiftwidth=4
+set softtabstop=4       " tabs equal 2 space 
+set expandtab           " inserts spaces when tab is pressed
 set number              " show line numbers
 set showcmd             " show command in bottom bar
-set smartindent
+set smartindent         "
+set nostartofline
+set ignorecase
+set smartcase
 set display+=lastline
 set wrap
 set ruler
-set title
 set confirm
 set lazyredraw
 set backspace=indent,eol,start
+set bs=2
 set wildmenu
+set wildmode=longest,list
 set cursorline
 set showmatch
 set nocompatible
-set sm
-set sw=2
-set noai
+set sm                  " matching braces
 set pastetoggle=<F12>
-set bs=2
-set complete=.,w,b,u,t,]
+set complete=.,w,b,u,t,i]
 set hlsearch
-set ignorecase smartcase
 set incsearch
-set wildmode=longest,list
 set laststatus=2
-set noshowmode
 set scrolloff=10
 
 " remaps
@@ -113,10 +112,6 @@ map <F1> :FZF<CR>
 :command Wq wq
 :command Q q
 :command WQ wq
-
-if !has('gui_running')
-  set t_Co=256
-endif
 
 let g:lightline = {
   \ 'colorscheme': 'one',
