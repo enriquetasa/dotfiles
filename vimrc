@@ -14,19 +14,6 @@ call vundle#end()            " required
 
 " DAI specific stuff """""""""""""""""""""""""""""""""""""""""""""""""
 
-:if has("terminfo")
-:  set t_Co=8
-:  set t_Sf=^[[3%p1%dm
-:  set t_Sb=^[[4%p1%dm
-:else
-:  set t_Co=8
-:  set t_Sf=^[[3%dm
-:  set t_Sb=^[[4%dm
-:endif
-:set t_kb=^H
-
-set t_kb=^V<BS>
-
 map <F8> :!ut_ctags<CR>
 map! <F8> <ESC>:!ut_ctags<CR>
 set tags=./tags,./TAGS,tags,TAGS,.tags,~/.tags,~/.TAGS
