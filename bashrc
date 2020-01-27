@@ -36,7 +36,12 @@ alias gdb='cgdb'
 
 # End of Aliases ########################################################################################
 
-# Bash prompt
+# Colours
+export TERM=xterm-color
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+#Bash prompt
 export PS1="[\[\e[31m\]\u\[\e[m\]@\[\e[32m\]\h\[\e[m\]]|[\[\e[36m\]\w\[\e[m\]\[\e[37m\]]\[\e[m\]: "
 
 # history config
