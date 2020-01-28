@@ -92,6 +92,8 @@ set incsearch
 set laststatus=2
 set scrolloff=10
 set noai
+set textwidth=80
+set ttyfast
 
 " remaps
 nnoremap ; :
@@ -110,4 +112,3 @@ let g:lightline = {
 
 com! FormatJSON %!python -m json.tool
 
-set ttyfast
