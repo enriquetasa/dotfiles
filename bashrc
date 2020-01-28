@@ -15,6 +15,7 @@ alias cls='clear && ls'
 alias python='python3'
 alias pip='pip3'
 alias vi='vim'
+alias tmux='tmux -2'
 
 # grep & ag aliases
 alias grep='grep --color=auto'

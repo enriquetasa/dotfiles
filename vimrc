@@ -8,7 +8,7 @@ call vundle#begin()
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
 Plugin 'valloric/youcompleteme'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'joshdick/onedark.vim'
 
 call vundle#end()            " required
 
@@ -58,10 +58,10 @@ endif " has("autocmd")
 " colours
 syntax enable
 set background=dark
-"let g:solarized_termtrans = 1
-let g:solarized_termcolors=256
 set t_Co=256
-colorscheme solarized
+set term=screen-256color
+let g:onedark_termcolors=256
+colorscheme onedark 
 
 " editor stuff
 set shiftwidth=4
@@ -77,7 +77,6 @@ set display+=lastline
 set wrap
 set ruler
 set confirm
-set lazyredraw
 set backspace=indent,eol,start
 set bs=2
 set wildmenu
@@ -93,6 +92,8 @@ set incsearch
 set laststatus=2
 set scrolloff=10
 set noai
+set textwidth=80
+set ttyfast
 
 " remaps
 nnoremap ; :
@@ -110,3 +111,4 @@ let g:lightline = {
   \ }
 
 com! FormatJSON %!python -m json.tool
+
