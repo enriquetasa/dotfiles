@@ -1,28 +1,34 @@
 {
+  // TODO - include extension installs
+  "python.pythonPath": "/usr/bin/python3",
+
   // tabs
   "editor.tabSize": 4,
+  "editor.detectIndentation": false,
   "editor.insertSpaces": true,
-
+  
   // formatting
   "editor.formatOnSave": true,
-  "editor.rulers": [80],
+  "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
 
   // font
-  "editor.fontFamily": "Hack",
-  "editor.fontLigatures": false,
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 17,
 
   //saving
   "files.autoSave": "afterDelay",
 
   // explorer
   "explorer.sortOrder": "type",
-
+                                     
   // viewing
   "editor.mouseWheelZoom": true,
   "editor.wordWrap": "on",
   "editor.cursorSmoothCaretAnimation": true,
-
+  "terminal.integrated.fontSize": 17,
+                                                 
   // exclude files
   "files.exclude": {
     "**/.git": true,
@@ -61,3 +67,4 @@
     "work": true
   }
 }
+
