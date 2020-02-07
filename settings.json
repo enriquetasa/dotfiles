@@ -1,28 +1,38 @@
 {
-  // tabs
-  "editor.tabSize": 4,
-  "editor.insertSpaces": true,
+  // TODO - include extension installs
 
+  // tabs
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  
   // formatting
   "editor.formatOnSave": true,
-  "editor.rulers": [80],
+  "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
 
   // font
-  "editor.fontFamily": "Hack",
-  "editor.fontLigatures": false,
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 17,
 
   //saving
   "files.autoSave": "afterDelay",
 
   // explorer
   "explorer.sortOrder": "type",
-
+                                     
   // viewing
   "editor.mouseWheelZoom": true,
   "editor.wordWrap": "on",
   "editor.cursorSmoothCaretAnimation": true,
-
+  "editor.rulers": [80,120]
+  "terminal.integrated.fontSize": 17,
+  
+  "window.zoomLevel": 1,
+  "terminal.integrated.scrollback": 5000,
+  "explorer.confirmDragAndDrop": false,
+                                                 
   // exclude files
   "files.exclude": {
     "**/.git": true,
