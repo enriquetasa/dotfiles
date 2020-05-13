@@ -10,5 +10,6 @@ if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 vim +PluginInstall +qall
-sudo python ~/.vim/bundle/youcompleteme/install.py
+yum install build-essential cmake vim python3-devel
+sudo python3 ~/.vim/bundle/youcompleteme/install.py
 echo "Check for the dotfiles directory permissions and the compilation of YCM"
