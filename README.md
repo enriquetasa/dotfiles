@@ -1,3 +1,3 @@
-# tasa_utilities
+# dotfiles
 
-A place for all the utility files I've made
+these are the dotfiles I use
