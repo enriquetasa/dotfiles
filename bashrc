@@ -1,10 +1,5 @@
 [[ $- == *i* ]] || return 
 
-# DAI Specific stuff ##################################################################################
-. ~/source/ut_profile.sh
-alias rebuild="sm_sysman noninteractive shutdown && ut_sys_build && sm_startup --yes-to-all"
-#######################################################################################################
-
 # Aliases #############################################################################################
 
 # ls aliases
@@ -33,9 +28,6 @@ alias rm='rm -iv'
 
 # classic
 alias please='sudo'
-
-# always use cgdb
-alias gdb='cgdb'
 
 # End of Aliases ########################################################################################
 
