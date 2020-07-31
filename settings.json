@@ -1,9 +1,8 @@
 {
   // TODO - include extension installs
-  "python.pythonPath": "/usr/bin/python3",
 
   // tabs
-  "editor.tabSize": 4,
+  "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   
@@ -27,7 +26,12 @@
   "editor.mouseWheelZoom": true,
   "editor.wordWrap": "on",
   "editor.cursorSmoothCaretAnimation": true,
+  "editor.rulers": [80,120]
   "terminal.integrated.fontSize": 17,
+  
+  "window.zoomLevel": 1,
+  "terminal.integrated.scrollback": 5000,
+  "explorer.confirmDragAndDrop": false,
                                                  
   // exclude files
   "files.exclude": {
@@ -67,4 +71,3 @@
     "work": true
   }
 }
-

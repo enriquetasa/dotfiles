@@ -88,7 +88,7 @@ call plug#end()
 " Required:
 filetype plugin indent on
 
-## General
+"" General
 set number	# Show line numbers
 set linebreak	# Break lines at word (requires Wrap lines)
 set showbreak=+++	# Wrap-broken line prefix
@@ -108,7 +108,7 @@ set smartindent	# Enable smart-indent
 set smarttab	# Enable smart-tabs
 set softtabstop=2	# Number of spaces per Tab
  
-## Advanced
+"" Advanced
 set confirm	# Prompt confirmation dialogs
 set ruler	# Show row and column ruler information
  
@@ -156,7 +156,7 @@ if exists("*fugitive#statusline")
   set statusline+=%{fugitive#statusline()}
 endif
 
-## Commands
+"" Commands
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
 cnoreabbrev Qall! qall!

@@ -29,9 +29,6 @@ alias rm='rm -iv'
 # classic
 alias please='sudo'
 
-# always use cgdb
-alias gdb='cgdb'
-
 # End of Aliases ########################################################################################
 
 # Colours
