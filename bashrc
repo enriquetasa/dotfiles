@@ -3,15 +3,17 @@
 # Aliases #############################################################################################
 
 # ls aliases
+alias ls='ls --color=auto'
 alias ll='ls -alh'
 alias l='ls'
 alias s='ls'
 alias sl='ls'
-alias ls='ls --color=auto'
 alias cls='clear && ls'
+
 alias python='python3'
 alias pip='pip3'
-alias vi='vim'
+
+alias vi='neovim'
 alias tmux='tmux -2'
 
 # grep & ag aliases
