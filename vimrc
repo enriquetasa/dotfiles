@@ -25,22 +25,22 @@ call plug#begin(expand('~/.vim/plugged'))
 "*****************************************************************************
 "" Plug install packages
 "*****************************************************************************
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/grep.vim'
-Plug 'vim-scripts/CSApprox'
-Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
-Plug 'Yggdroot/indentLine'
-Plug 'avelino/vim-bootstrap-updater'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
+"Plug 'scrooloose/nerdtree'
+"Plug 'jistr/vim-nerdtree-tabs'
+"Plug 'tpope/vim-commentary'
+"Plug 'tpope/vim-fugitive'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+"Plug 'airblade/vim-gitgutter'
+"Plug 'vim-scripts/grep.vim'
+"Plug 'vim-scripts/CSApprox'
+"Plug 'Raimondi/delimitMate'
+"Plug 'majutsushi/tagbar'
+"Plug 'w0rp/ale'
+"Plug 'Yggdroot/indentLine'
+"Plug 'avelino/vim-bootstrap-updater'
+"Plug 'sheerun/vim-polyglot'
+"Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -52,18 +52,18 @@ let g:make = 'gmake'
 if exists('make')
         let g:make = 'make'
 endif
-Plug 'Shougo/vimproc.vim', {'do': g:make}
+"Plug 'Shougo/vimproc.vim', {'do': g:make}
 
 "" Vim-Session
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
+"Plug 'xolox/vim-misc'
+"Plug 'xolox/vim-session'
 
 "" Snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
 
 "" Color
-Plug 'tomasr/molokai'
+"Plug 'tomasr/molokai'
 
 "*****************************************************************************
 "" Custom bundles
@@ -71,8 +71,8 @@ Plug 'tomasr/molokai'
 
 " python
 "" Python Bundle
-Plug 'davidhalter/jedi-vim'
-Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
+"Plug 'davidhalter/jedi-vim'
+"Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
 
 "*****************************************************************************
