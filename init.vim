@@ -25,6 +25,7 @@ call plug#end()
 
 " editor stuff
 syntax enable
+set number
 set shiftwidth=2
 set softtabstop=2       " tabs equal 2 space 
 set expandtab           " inserts spaces when tab is pressed

@@ -3,7 +3,6 @@
 # Aliases #############################################################################################
 
 # ls aliases
-alias ls='ls --color=auto'
 alias ll='ls -alh'
 alias l='ls'
 alias s='ls'
@@ -13,7 +12,7 @@ alias cls='clear && ls'
 alias python='python3'
 alias pip='pip3'
 
-alias vi='neovim'
+alias vi='nvim'
 alias tmux='tmux -2'
 
 # grep & ag aliases
@@ -38,15 +37,9 @@ export TERM=xterm-color
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 
-#Bash prompt
-export PS1="[\[\e[31m\]\u\[\e[m\]@\[\e[32m\]\h\[\e[m\]]|[\[\e[36m\]\w\[\e[m\]\[\e[37m\]]\[\e[m\]: "
-
 # history config
 export HISTFILESIZE=20000
 export HISTSIZE=10000
-shopt -s histappend
-# Combine multiline commands into one in history
-shopt -s cmdhist
 # Ignore duplicates, ls without options and builtin commands
 HISTCONTROL=ignoredups
 export HISTIGNORE="&:ls:[bf]g:exit"

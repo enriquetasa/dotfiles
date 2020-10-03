@@ -1,8 +1,9 @@
 echo "Modify this file to allow for username and for selection of vim/neovim and run again"
-echo ". /dotfiles/bashrc" > ~/.bashrc
-# echo ":source /dotfiles/vimrc" > ~/.vimrc
-# echo ":source /dotfiles/init.vim" > /home/joji/.config/nvim/init.vim
-echo ". /dotfiles/ignore" > ~/.ignorerc
-echo ". /dotfiles/bash_profile" > ~/.bash_profile
-echo "source-file /dotfiles/tmux.conf" > ~/.tmux.conf
-echo ":source /dotfiles/vimrc" > ~/.vimrc
+echo ". /Users/etasa/dotfiles/bashrc" > ~/.bashrc
+echo ". /Users/etasa/dotfiles/zshrc" > ~/.zshrc
+echo ":source /Users/etasa/dotfiles/vimrc" > ~/.vimrc
+mkdir /Users/etasa/.config/nvim/
+echo ":source /Users/etasa/dotfiles/init.vim" > /Users/etasa/.config/nvim/init.vim
+echo ". /Users/etasa/dotfiles/ignore" > ~/.ignorerc
+echo ". /Users/etasa/dotfiles/bash_profile" > ~/.bash_profile
+echo "source-file /Users/etasa/dotfiles/tmux.conf" > ~/.tmux.conf
