@@ -1,14 +1,14 @@
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
       \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
 
 "Specify a directory for plugins
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged/')
 
 Plug 'scrooloose/nerdtree' " shows a file tree
-Plug 'tsony-tsonev/nerdtree-git-plugin' " shows git status in nerdtree 
+" TODO - gives an error Plug 'tsony-tsonev/nerdtree-git-plugin' " shows git status in nerdtree 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " shows file icons on nerdtree
 Plug 'airblade/vim-gitgutter' " shows git status in vim files
 Plug 'junegunn/fzf' " fuzzy find files
@@ -53,6 +53,9 @@ map <C-n> :NERDTreeToggle<CR> " open nerdtree with Ctrl+N
 
 " commands
 com! FormatJSON %!python -m json.tool
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
 
 "" NerdTree configuration
 
