@@ -14,6 +14,8 @@ Plug 'airblade/vim-gitgutter' " shows git status in vim files
 Plug 'junegunn/fzf' " fuzzy find files
 Plug 'vim-airline/vim-airline' " airline status line
 Plug 'vim-airline/vim-airline-themes' " airline themes
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " simple autocomplete
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' } " adds tabnine to autocomplete
 
 " Initialize plugin system
 call plug#end()
@@ -82,3 +84,5 @@ let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#virtualenv#enabled = 1
 
+" autocomplete options
+let g:deoplete#enable_at_startup = 1

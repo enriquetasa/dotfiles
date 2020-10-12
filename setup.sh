@@ -15,6 +15,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt install neovim
     sudo apt install tmux
     sudo apt install zsh
+    pip3 install pynvim
     sudo apt autoremove
     sudo apt autoclean
     echo "Installed Linux configuration, nvim and tmux"
@@ -27,6 +28,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew install zsh
     brew install neovim
     brew install tmux
+    brew install python
+    pip3 install pynvim
     echo "Installed brew, macOS configuration, nvim and tmux"
 else 
     echo "Can't recognise this OS"
