@@ -1,5 +1,4 @@
 PROMPT="[%F{green}%n%f@%F{red}%m%f] || (%F{cyan}%~%f) : "
-emulate sh -c 'source ~/.bashrc'
 
 ########################################################
 # Configuration
@@ -64,27 +63,35 @@ else # macOS `ls`
     colorflag="-G"
 fi
 
+# bants
+alias please="sudo"
+
 # Filesystem aliases
-alias ..='cd ..'
-alias ...='cd ../..'
+alias ..="cd .."
+alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 alias l="ls -lah ${colorflag}"
 alias la="ls -AF ${colorflag}"
-alias ll="ls -lFh ${colorflag}"
+alias ll="ls -alFh ${colorflag}"
 alias lld="ls -l | grep ^d"
+alias rm="rm -iv"
 alias rmf="rm -rf"
 
 # Helpers
-alias grep='grep --color=auto'
-alias df='df -h' # disk free, in Gigabytes, not bytes
-alias du='du -h -c' # calculate disk usage for a folder
+alias grep="grep --color=auto"
+alias df="df -h" # disk free, in Gigabytes, not bytes
+alias du="du -h -c" # calculate disk usage for a folder
+
+# vim aliases
+alias vi="nvim"
+alias vim="nvim"
 
 # tmux aliases
-alias tls='tmux ls'
-alias tat='tmux attach -t'
-alias tns='tmux new-session -s'
+alias tls="tmux ls"
+alias tat="tmux attach -t"
+alias tns="tmux new-session -s"
 
 # runs at the beggining of execution
 tns tasa
