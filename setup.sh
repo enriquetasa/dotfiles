@@ -1,8 +1,11 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo $DIR
+
 echo "Starting system setup"
 
-sudo chmod 555 -R /dotfiles
+sudo chmod 555 -R $DIR
 
 # system updates and upgrades, neovim
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -30,16 +33,14 @@ else
     return
 fi
 
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 # dotfiles - TODO symlinks don't work for some reason
 echo "Symlinking dotfiles"
-ln -sf /dotfiles/zshrc ~/.zshrc
+ln -sf $DIR/zshrc ~/.zshrc
 touch ~/.zshenv
 touch ~/.zsh_profile
 touch ~/.zshlogin
 touch ~/.zshlogout
-ln -sf /dotfiles/tmux.conf ~/.tmux.conf
+ln -sf $DIR/tmux.conf ~/.tmux.conf
 
 # Legacy
 # ln -sv /dotfiles/.bashrc ~
@@ -51,7 +52,7 @@ if [ ! -d "~/.config/nvim/" ]
 then
     mkdir ~/.config/nvim
 fi
-ln -sf /dotfiles/init.vim ~/.config/nvim/init.vim
+ln -sf $DIR/init.vim ~/.config/nvim/init.vim
 nvim -c "PlugInstall"
 export EDITOR='nvim'
 export VISUAL='nvim'
