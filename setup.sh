@@ -25,7 +25,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     brew update
     brew upgrade
-    brew install zsh
     brew install neovim
     brew install tmux
     brew install python
@@ -51,10 +50,11 @@ ln -sf $DIR/tmux.conf ~/.tmux.conf
 # ln -sv /dotfiles/.vimrc ~
 
 echo "Configuring nvim"
-if [ ! -d "~/.config/nvim/" ] 
-then
-    mkdir ~/.config/nvim
-fi
+mkdir ~/.config/nvim
+mkdir ~/.config/nvim/plugged
+mkdir ~/.config/nvim/autoload
+sh -c 'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ln -sf $DIR/init.vim ~/.config/nvim/init.vim
 nvim -c "PlugInstall"
 export EDITOR='nvim'
