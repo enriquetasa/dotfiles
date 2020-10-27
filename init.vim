@@ -32,15 +32,14 @@ set smartindent         " indent 'intelligently'
 set ignorecase          " ignore and smart case help make search 
 set smartcase           " non-case-sensitive unless you put caps in there
 set display+=lastline   " as much as possible of the last line will display
-set wrap                " wraps at column width
-set linebreak           " breaks the line at column width
-set showbreak=+++       " wrapped lined prefix
-set textwidth=80        " text width is 80
-set colorcolumn=80      " displays a coloured line at 80 chars
 set confirm             " asks for confirmation when exiting
 set backspace=indent,eol,start  " backspace works normally
 set pastetoggle=<F12>   " F12 is the paste toggle
 set scrolloff=10        " displays 10 lines under scroll
+
+" highlight text after 80 characters
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
 
 " title stuff
 set title

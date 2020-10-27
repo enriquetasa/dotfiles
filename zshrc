@@ -63,6 +63,11 @@ else # macOS `ls`
     colorflag="-G"
 fi
 
+# export PATH
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/share/python:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:~/bin:$PATH
+
 # bants
 alias please="sudo"
 
@@ -88,10 +93,24 @@ alias du="du -h -c" # calculate disk usage for a folder
 alias vi="nvim"
 alias vim="nvim"
 
+# python aliases
+alias python="python3"
+alias pip="pip3"
+
+# venv aliases and utils
+source "/usr/local/bin/virtualenvwrapper.sh"
+export WORKON_HOME="/Users/tasa/venvs"
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.8
+alias venv="mkvirtualenv"
+alias lsvenv="lsvirtualenv"
+
 # tmux aliases
 alias tls="tmux ls"
 alias tat="tmux attach -t"
 alias tns="tmux new-session -s"
 
-# runs at the beggining of execution
-tns tasa
+# functions 
+
+function name {
+  echo -ne "\e]1;$1 $2 $3 $4 $5 $6 $7 $8 $9\a"
+}
