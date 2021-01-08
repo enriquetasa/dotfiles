@@ -83,6 +83,7 @@ alias ll="ls -alFh ${colorflag}"
 alias lld="ls -l | grep ^d"
 alias rm="rm -iv"
 alias rmf="rm -rf"
+alias history="history 1"
 
 # Helpers
 alias grep="grep --color=auto"
@@ -98,11 +99,19 @@ alias python="python3"
 alias pip="pip3"
 
 # venv aliases and utils
-source "/usr/local/bin/virtualenvwrapper.sh"
 export WORKON_HOME="/Users/tasa/venvs"
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.8
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 alias venv="mkvirtualenv"
 alias lsvenv="lsvirtualenv"
+source "/usr/local/bin/virtualenvwrapper.sh"
+
+# exports for React-Native development
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # tmux aliases
 alias tls="tmux ls"

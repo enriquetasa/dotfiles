@@ -15,6 +15,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt install neovim
     sudo apt install tmux
     sudo apt install zsh
+    sudo apt install nodejs
+    sudo apt install golang
+    sudo apt install postgresql
+    sudo apt install nginx
     pip3 install pynvim
     sudo apt autoremove
     sudo apt autoclean
@@ -61,5 +65,10 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 
 chsh -s $(which zsh)
+
+pip install virtualenvwrapper
+export WORKON_HOME=~/venvs
+mkdir -p $WORKON_HOME
+source /usr/local/bin/virtualenvwrapper.sh
 
 echo "Set up successful, you'll have to logout and back in for shell changes to take place"
