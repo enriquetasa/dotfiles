@@ -14,6 +14,7 @@ Plug 'airblade/vim-gitgutter' " shows git status in vim files
 Plug 'junegunn/fzf' " fuzzy find files
 Plug 'vim-airline/vim-airline' " airline status line
 Plug 'vim-airline/vim-airline-themes' " airline themes
+Plug 'tmhedberg/SimpylFold' " good python folding
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " simple autocomplete
 Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' } " adds tabnine to autocomplete
 
@@ -36,14 +37,15 @@ set confirm             " asks for confirmation when exiting
 set backspace=indent,eol,start  " backspace works normally
 set pastetoggle=<F12>   " F12 is the paste toggle
 set scrolloff=10        " displays 10 lines under scroll
+set splitright          " display split files on the right by default
 
 " highlight text after 80 characters
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
 " title stuff
-set title
-set titlestring=VIM:\ %-25.55F\ %a%r%m titlelen=70
+"set title
+"set titlestring=VIM:\ %-25.55F\ %a%r%m titlelen=70
 
 " status line
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
@@ -85,3 +87,8 @@ let g:airline#extensions#virtualenv#enabled = 1
 
 " autocomplete options
 let g:deoplete#enable_at_startup = 1
+
+" folding options
+let g:SimpylFold_docstring_preview = 1
+let g:SimpylFold_fold_import = 0
+let g:SimpylFold_fold_docstring = 0
