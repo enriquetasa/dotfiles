@@ -100,11 +100,11 @@ alias pip="pip3"
 
 # venv aliases and utils
 export WORKON_HOME="/Users/tasa/venvs"
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.8
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
+export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3.8"
+export VIRTUALENVWRAPPER_VIRTUALENV="/home/tasa/.local/bin/virtualenv"
 alias venv="mkvirtualenv"
 alias lsvenv="lsvirtualenv"
-source "/usr/local/bin/virtualenvwrapper.sh"
+source "/home/tasa/.local/bin/virtualenvwrapper.sh"
 
 # exports for React-Native development
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -123,3 +123,5 @@ alias tns="tmux new-session -s"
 function name {
   echo -ne "\e]1;$1 $2 $3 $4 $5 $6 $7 $8 $9\a"
 }
+
+echo "Remember, please enjoy yourself"
