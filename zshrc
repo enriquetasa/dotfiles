@@ -70,6 +70,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:~/bin:$PATH
 
 # bants
 alias please="sudo"
+alias unimente="ssh tasa@unimente.enriquetasa.com -p 69"
 
 # Filesystem aliases
 alias ..="cd .."
@@ -100,7 +101,7 @@ alias pip="pip3"
 
 # venv aliases and utils
 export WORKON_HOME="/Users/tasa/venvs"
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.8
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.9
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 alias venv="mkvirtualenv"
 alias lsvenv="lsvirtualenv"
