@@ -67,6 +67,7 @@ fi
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:~/bin:$PATH
+export PATH=/Library/Python/3.7/bin:$PATH
 
 # bants
 alias please="sudo"
@@ -98,6 +99,9 @@ alias vim="nvim"
 # python aliases
 alias python="python3"
 alias pip="pip3"
+
+# git aliases
+alias clean_git="git branch --merged | egrep -v "(^\*|master|develop)" | xargs git branch -d"
 
 # venv aliases and utils
 export WORKON_HOME="/Users/tasa/venvs"
