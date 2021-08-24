@@ -33,6 +33,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew install tmux
     brew install python
     pip3 install pynvim
+    xcode-select --install
     echo "Installed brew, macOS configuration, nvim and tmux"
 else 
     echo "Can't recognise this OS"
