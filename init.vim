@@ -16,7 +16,7 @@ Plug 'vim-airline/vim-airline' " airline status line
 Plug 'vim-airline/vim-airline-themes' " airline themes
 Plug 'tmhedberg/SimpylFold' " good python folding
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " simple autocomplete
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' } " adds tabnine to autocomplete
+"Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' } " adds tabnine to autocomplete
 
 " Initialize plugin system
 call plug#end()
