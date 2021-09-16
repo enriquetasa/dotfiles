@@ -33,7 +33,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew install tmux
     brew install python
     pip3 install pynvim
-    xcode-select --install
     echo "Installed brew, macOS configuration, nvim and tmux"
 else 
     echo "Can't recognise this OS"
@@ -48,6 +47,7 @@ touch ~/.zsh_profile
 touch ~/.zshlogin
 touch ~/.zshlogout
 ln -sf $DIR/tmux.conf ~/.tmux.conf
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Legacy
 # ln -sv /dotfiles/.bashrc ~
