@@ -90,7 +90,7 @@ function name {
 # exports
 export DJANGO_DEVELOPMENT=True
 
-plugins=(git osx python)
+plugins=(git macos python)
 export ZSH="/Users/tasa/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 COMPLETION_WAITING_DOTS="true"
