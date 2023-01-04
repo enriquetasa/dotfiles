@@ -37,7 +37,7 @@ alias unimente="ssh tasa@unimente.enriquetasa.com -p 69"
 # ls aliases
 alias l="ls -lah ${colorflag}"
 alias la="ls -AF ${colorflag}"
-alias ll="ls -alFh ${colorflag}"
+alias ll="ls -alh ${colorflag}"
 alias lld="ls -l | grep ^d"
 alias rm="rm -iv"
 alias rmf="rm -rf"
@@ -65,7 +65,7 @@ export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.9
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 alias venv="mkvirtualenv"
 alias lsvenv="lsvirtualenv"
-source "/usr/local/bin/virtualenvwrapper.sh"
+source "/opt/homebrew/bin/virtualenvwrapper.sh"
 
 # exports for React-Native development
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -82,7 +82,7 @@ alias tns="tmux new-session -s"
 # open vscode from cli
 alias code="open -a /Applications/Visual\ Studio\ Code.app"
 
-# functions 
+# functions
 function name {
   echo -ne "\e]1;$1 $2 $3 $4 $5 $6 $7 $8 $9\a"
 }
