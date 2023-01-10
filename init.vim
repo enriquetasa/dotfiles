@@ -1,22 +1,26 @@
+" install plug if it isn't installed
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
       \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
 
-"Specify a directory for plugins
+" Specify a directory for plugins
 call plug#begin('~/.config/nvim/plugged/')
 
 Plug 'scrooloose/nerdtree' " shows a file tree
-" TODO - gives an error Plug 'tsony-tsonev/nerdtree-git-plugin' " shows git status in nerdtree 
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " shows file icons on nerdtree
-Plug 'airblade/vim-gitgutter' " shows git status in vim files
-Plug 'junegunn/fzf' " fuzzy find files
 Plug 'vim-airline/vim-airline' " airline status line
-Plug 'vim-airline/vim-airline-themes' " airline themes
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tmhedberg/SimpylFold' " good python folding
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " simple autocomplete
-"Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' } " adds tabnine to autocomplete
+Plug 'psf/black', { 'branch': 'stable' } " black
+Plug 'fisadev/vim-isort' " isorti
+Plug 'projekt0n/github-nvim-theme' " themes
+Plug 'vim-syntastic/syntastic' " more highlighting stuff
+Plug 'kien/ctrlp.vim' " find stuff with CRTL+P
+Plug 'dense-analysis/ale' " Language server for python
+Plug 'tpope/vim-fugitive' " git integration in file
+Plug 'Xuyuanp/nerdtree-git-plugin' " git integration in nerdtree
+
 
 " Initialize plugin system
 call plug#end()
@@ -38,25 +42,26 @@ set backspace=indent,eol,start  " backspace works normally
 set pastetoggle=<F12>   " F12 is the paste toggle
 set scrolloff=10        " displays 10 lines under scroll
 set splitright          " display split files on the right by default
+colorscheme github_dark_default
 
-" highlight text after 80 characters
+" Enable mouse support
+set mouse=a
+set selection=inclusive
+set selectmode=mouse
+
+" highlight text after 100 characters
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+match OverLength /\%101v.\+/
 
 " title stuff
-"set title
-"set titlestring=VIM:\ %-25.55F\ %a%r%m titlelen=70
+set title
+set titlestring=VIM:\ %-25.55F\ %a%r%m titlelen=70
 
 " status line
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 
-" key bindings
-map <C-n> :NERDTreeToggle<CR> " open nerdtree with Ctrl+N
-" TODO - fzf 
-
 " commands
 com! FormatJSON %!python -m json.tool
-
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
@@ -73,7 +78,6 @@ let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
 " airline configuration
 
@@ -84,11 +88,37 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-" autocomplete options
+
+" deoplete autocomplete options
 let g:deoplete#enable_at_startup = 1
 
 " folding options
 let g:SimpylFold_docstring_preview = 1
 let g:SimpylFold_fold_import = 0
 let g:SimpylFold_fold_docstring = 0
+
+" run Black on save
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+augroup end
+
+" python configuration
+au BufNewFile,BufRead *.py set filetype=python
+let python_highlight_all=1
+syntax on
+
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+" highlight bad whitespace 
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
