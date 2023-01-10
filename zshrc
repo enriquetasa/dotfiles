@@ -48,11 +48,6 @@ ZSH_THEME="robbyrussell"
 COMPLETION_WAITING_DOTS="true"
 source $ZSH/oh-my-zsh.sh
 
-# pure
-autoload -U promptinit; promptinit
-prompt pure
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
-
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
