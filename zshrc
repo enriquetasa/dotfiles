@@ -18,14 +18,19 @@ bindkey "^K" history-beginning-search-backward
 # aliases
 alias ll="ls -alHG ${colorflag}"
 alias grep="grep --color=auto"
+alias agl="ag -l"
 alias vi="nvim"
 alias vim="nvim"
-alias taskw="~/code/utilities/taskwarrior-tui"
 alias zshrc="vi ~/code/dotfiles/zshrc"
 alias vimrc="vi ~/code/dotfiles/init.vim"
+alias ignore="vi ~/.ignore" 
+
+# git
+alias fixup="commit --edit --fixup"
+alias wip="commit -m 'RESET ME [skip ci]' -n"
 
 # venv
-export WORKON_HOME="/Users/tasa/venvs"
+export WORKON_HOME="~/venvs"
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
@@ -33,12 +38,12 @@ alias venv="mkvirtualenv"
 alias lsvenv="lsvirtualenv"
 source "/opt/homebrew/bin/virtualenvwrapper.sh"
 
-# tmux aliases
+# tmux
 alias tls="tmux ls"
 alias tat="tmux attach -t"
 alias tns="tmux new-session -s"
 
-# open vscode from cli
+# vscode
 alias code="open -a /Applications/Visual\ Studio\ Code.app"
 
 # oh my zsh
@@ -48,30 +53,17 @@ ZSH_THEME="robbyrussell"
 COMPLETION_WAITING_DOTS="true"
 source $ZSH/oh-my-zsh.sh
 
-# pure
-autoload -U promptinit; promptinit
-prompt pure
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
-
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-_complete_invoke() {
-    collection_arg=''
-    if [[ "${words}" =~ "(-c|--collection) [^ ]+" ]]; then
-        collection_arg=$MATCH
-    fi
-    reply=( $(invoke ${=collection_arg} --complete -- ${words}) )
-}
-compctl -K _complete_invoke + -f invoke inv
-
 # pyenv
 eval "$(pyenv init -)"
 
-# octopus aliases
+# octopus
 alias run_support="DJANGO_CONFIGURATION=OEESSupportSite honcho start -f Procfile.supportsite"
 alias run_migrations="DJANGO_CONFIGURATION=OEESMigrations DJANGO_SETTINGS_MODULE=localdev.settings ./manage.py migrate --database=default"
 alias run_tests="DJANGO_SETTINGS_MODULE=tests.settings pytest"
-
+export TENTACLIO__SECRETS_FILE=~/.tentaclio.yml # tentaclio secrets file
+export PIPENV_VERBOSITY=-1
