@@ -1,0 +1,13 @@
+[commit]
+	template = ~/.git_commit_msg.txt
+[user]
+	name = Enrique Tasa
+	email = tasa@enriquetasa.com
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[rebase]
+        autosquash = true
