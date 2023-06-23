@@ -40,11 +40,7 @@ git clone git@github.com:enriquetasa/dotfiles.git
 cp ~/code/dotfiles/zshrc ~/.zshrc
 
 # Configure git 
-git config --global user.name "Enrique Tasa"
-git config --global user.email "tasa@enriquetasa.com"
-git config --global pull.rebase true
-git config --global push.autoSetupRemote true
-git config --global commit.template ~/code/dotfiles/git_commit_msg.txt
+cp ~/code/dotfiles/gitconfig ~/.gitconfig
 
 # Configure vim
 mkdir ~/.config/nvim
