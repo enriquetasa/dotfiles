@@ -26,8 +26,8 @@ alias vimrc="vi ~/code/dotfiles/init.vim"
 alias ignore="vi ~/.ignore" 
 
 # git
-alias fixup="commit --edit --fixup"
-alias wip="commit -m 'RESET ME [skip ci]' -n"
+alias gitfixup="git commit --edit --fixup"
+alias gitwip="git commit -m 'RESET ME [skip ci]' -n"
 
 # venv
 export WORKON_HOME="~/venvs"
