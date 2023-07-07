@@ -8,14 +8,17 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 " Specify a directory for plugins
 call plug#begin('~/.config/nvim/plugged/')
 
+" autocomplete
+Plug 'davidhalter/jedi-vim'
+
 " Syntax highlighting
 set nocompatible
 Plug 'sheerun/vim-polyglot'
 
 " VIM visuals
+" airline
 Plug 'vim-airline/vim-airline' " airline status line
 Plug 'vim-airline/vim-airline-themes'
-" airline configuration
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#ale#enabled = 1
@@ -24,6 +27,7 @@ let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#virtualenv#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+" theme
 Plug 'danilo-augusto/vim-afterglow'
 let g:airline_theme='afterglow'
 
@@ -43,26 +47,33 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 call plug#end()
 
-" editor stuff
+" editor
+" code
 filetype plugin indent on
-syntax on
-colorscheme afterglow
-set number              " show line numbers
-set showmatch           " match brackets with colours
 set shiftwidth=2        " indent width
 set softtabstop=2       " tabs equal 2 space 
 set expandtab           " inserts spaces when tab is pressed
-set showcmd             " show command in bottom bar
 set smartindent         " indent 'intelligently' 
+" search
 set ignorecase          " ignore and smart case help make search 
 set smartcase           " non-case-sensitive unless you put caps in there
+" display
+syntax on
+colorscheme afterglow
+set showcmd             " show command in bottom bar
+set number              " show line numbers
+set showmatch           " match brackets with colours
 set display+=lastline   " as much as possible of the last line will display
-set confirm             " asks for confirmation when exiting
 set backspace=indent,eol,start  " backspace works normally
 set scrolloff=10        " displays 10 lines under scroll
 set splitright          " display split files on the right by default
+" saving
+set confirm             " asks for confirmation when exiting
+" folding
 set nofoldenable        " do not display folded code on open
-
+set foldmethod=indent   " fold methodology is by indentation
+set foldnestmax=10
+set foldlevel=2
 " title stuff
 set title
 set titlestring=vim:\ %-25.55F\ %a%r%m titlelen=70
@@ -70,3 +81,9 @@ set titlestring=vim:\ %-25.55F\ %a%r%m titlelen=70
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
+" ctags
+set tags=./tags;/
+" Map Cmd+B to jump to the definition
+nnoremap <D-b> <C-]>
+" Map Cmd+LeftArrow to jump back
+nnoremap <D-Left> <C-t>

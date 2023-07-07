@@ -8,13 +8,6 @@ setopt SHARE_HISTORY             # share history between all sessions.
 setopt HIST_IGNORE_ALL_DUPS      # delete old recorded entry if new entry is a duplicate.
 setopt COMPLETE_ALIASES
 
-# keybindings
-bindkey "^A" vi-beginning-of-line
-bindkey -M viins "^F" vi-forward-word # [Ctrl-f] - move to next word
-bindkey -M viins "^E" vi-add-eol      # [Ctrl-e] - move to end of line
-bindkey "^J" history-beginning-search-forward
-bindkey "^K" history-beginning-search-backward
-
 # aliases
 alias ll="ls -alHG ${colorflag}"
 alias grep="grep --color=auto"
@@ -24,10 +17,29 @@ alias vim="nvim"
 alias zshrc="vi ~/code/dotfiles/zshrc"
 alias vimrc="vi ~/code/dotfiles/init.vim"
 alias ignore="vi ~/.ignore" 
+alias dotfiles="cd ~/code/dotfiles"
 
 # git
+alias gitconfig="vi ~/.gitconfig"
 alias gitfixup="git commit --edit --fixup"
 alias gitwip="git commit -m 'RESET ME [skip ci]' -n"
+function rebase_with_master(){
+     current_branch="$(git branch | awk '/\*/ { print $2; }')"
+     print $current_branch
+     git checkout master
+     git pull --rebase
+     git checkout $current_branch
+     git rebase master
+   }
+function rebase_with_main(){
+     current_branch="$(git branch | awk '/\*/ { print $2; }')"
+     print $current_branch
+     git checkout main
+     git pull --rebase
+     git checkout $current_branch
+     git rebase main
+  }
+alias gitlog="git log --oneline --decorate --reverse -n 40"
 
 # venv
 export WORKON_HOME="~/venvs"
@@ -67,3 +79,7 @@ alias run_migrations="DJANGO_CONFIGURATION=OEESMigrations DJANGO_SETTINGS_MODULE
 alias run_tests="DJANGO_SETTINGS_MODULE=tests.settings pytest"
 export TENTACLIO__SECRETS_FILE=~/.tentaclio.yml # tentaclio secrets file
 export PIPENV_VERBOSITY=-1
+function inv_checks(){
+   inv run-python-type-checker 
+   inv run-python-flake8-linter
+}
