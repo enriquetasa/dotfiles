@@ -45,6 +45,16 @@ let g:NERDTreeWinSize = 50
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+" python
+Plug 'psf/black', { 'tag': '19.10b0' }
+Plug 'fisadev/vim-isort'
+" run isort and black on save
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+  autocmd BufWritePre *.py Isort
+augroup end
+
 call plug#end()
 
 " editor
