@@ -18,6 +18,7 @@ alias zshrc="vi ~/code/dotfiles/zshrc"
 alias vimrc="vi ~/code/dotfiles/init.vim"
 alias ignore="vi ~/.ignore" 
 alias dotfiles="cd ~/code/dotfiles"
+alias venv="echo 'layout python3' > .envrc && direnv allow"
 
 # git
 alias gitconfig="vi ~/.gitconfig"
@@ -41,14 +42,8 @@ function rebase_with_main(){
   }
 alias gitlog="git log --oneline --decorate --reverse -n 40"
 
-# venv
-export WORKON_HOME="~/venvs"
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-alias venv="mkvirtualenv"
-alias lsvenv="lsvirtualenv"
-source "/opt/homebrew/bin/virtualenvwrapper.sh"
+# virtualenvironments
+eval "$(direnv hook zsh)"
 
 # tmux
 alias tls="tmux ls"
@@ -74,9 +69,6 @@ export NVM_DIR="$HOME/.nvm"
 eval "$(pyenv init -)"
 
 # octopus
-alias run_support="DJANGO_CONFIGURATION=OEESSupportSite honcho start -f Procfile.supportsite"
-alias run_migrations="DJANGO_CONFIGURATION=OEESMigrations DJANGO_SETTINGS_MODULE=localdev.settings ./manage.py migrate --database=default"
-alias run_tests="DJANGO_SETTINGS_MODULE=tests.settings pytest"
 export TENTACLIO__SECRETS_FILE=~/.tentaclio.yml # tentaclio secrets file
 export PIPENV_VERBOSITY=-1
 function inv_checks(){
