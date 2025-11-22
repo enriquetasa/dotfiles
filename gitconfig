@@ -1,5 +1,5 @@
 [commit]
-	template = ~/.git_commit_msg.txt
+	template = ~/.git_commit_template
 [user]
 	name = Enrique Tasa
 	email = tasa@enriquetasa.com
