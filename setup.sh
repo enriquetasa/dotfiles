@@ -25,7 +25,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt autoremove
     sudo apt autoclean
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
     echo "Installed Linux configuration"
 
 # macOS setup
@@ -37,7 +36,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew upgrade
     brew install git neovim tmux python pynvim
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
     echo "Installed brew, macOS configuration, nvim and tmux"
 
 else 
@@ -58,7 +56,11 @@ cp $DIR/zshrc ~/.zshrc
 chsh -s $(which zsh)
 exec zsh
 
-# nvim 
-export EDITOR='nvim'
-export VISUAL='nvim'
-nvim
+# vim 
+mkdir ~/.vim
+mkdir ~/.vim/{undo,backup,swap}
+cp $DIR/vimrc ~/.vimrc
+export EDITOR='vim'
+export VISUAL='vim'
+vim +PlugInstall +qall
+
