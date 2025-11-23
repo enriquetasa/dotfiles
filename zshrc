@@ -28,13 +28,12 @@ source $ZSH/oh-my-zsh.sh
 alias ll="ls -alHG ${colorflag}"
 alias grep="grep --color=auto"
 alias vi="nvim"
-alias vim="nvim"
-alias zshrc="nvim ~/.zshrc"
-alias vimrc="nvim ~/.config/nvim/init.vim"
+alias zshrc="vim ~/.zshrc"
+alias vimrc="vim ~/.vimrc"
 alias venv="echo 'layout python3' > .envrc && direnv allow"
 
 #
-export EDITOR="nvim"
+export EDITOR="vim"
 
 # macOS detection
 if [[ "$OSTYPE" == darwin* ]]; then
