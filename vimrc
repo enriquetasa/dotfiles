@@ -1,199 +1,27 @@
-"*****************************************************************************
-"" Vim-PLug core
-"*****************************************************************************
-let vimplug_exists=expand('~/.vim/autoload/plug.vim')
-
-let g:vim_bootstrap_langs = "python"
-let g:vim_bootstrap_editor = "vim"				" nvim or vim
-
-if !filereadable(vimplug_exists)
-  if !executable("curl")
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
+" PLUGIN CONFIGURATION "
+" I currently use a plugin manager called 'plugged'
+" Install plug if it isn't installed
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
-  echo "Installing Vim-Plug..."
-  echo ""
-  silent exec "!\curl -fLo " . vimplug_exists . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  let g:not_finish_vimplug = "yes"
 
-  autocmd VimEnter * PlugInstall
-endif
+" Specify a directory for plugins
+call plug#begin('~/.config/nvim/plugged/')
 
-" Required:
-call plug#begin(expand('~/.vim/plugged'))
+" Specify a directory for plugins
+call plug#begin()
 
-"*****************************************************************************
-"" Plug install packages
-"*****************************************************************************
-"Plug 'scrooloose/nerdtree'
-"Plug 'jistr/vim-nerdtree-tabs'
-"Plug 'tpope/vim-commentary'
-"Plug 'tpope/vim-fugitive'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-"Plug 'airblade/vim-gitgutter'
-"Plug 'vim-scripts/grep.vim'
-"Plug 'vim-scripts/CSApprox'
-"Plug 'Raimondi/delimitMate'
-"Plug 'majutsushi/tagbar'
-"Plug 'w0rp/ale'
-"Plug 'Yggdroot/indentLine'
-"Plug 'avelino/vim-bootstrap-updater'
-"Plug 'sheerun/vim-polyglot'
-"Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
+" plugin: jedi (autocompleting)
+Plug 'davidhalter/jedi-vim'
 
-if isdirectory('/usr/local/opt/fzf')
-  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-else
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-  Plug 'junegunn/fzf.vim'
-endif
-let g:make = 'gmake'
-if exists('make')
-        let g:make = 'make'
-endif
-"Plug 'Shougo/vimproc.vim', {'do': g:make}
+" plugin: polyglot (syntax highlighting)
+Plug 'sheerun/vim-polyglot'
 
-"" Vim-Session
-"Plug 'xolox/vim-misc'
-"Plug 'xolox/vim-session'
-
-"" Snippets
-"Plug 'SirVer/ultisnips'
-"Plug 'honza/vim-snippets'
-
-"" Color
-"Plug 'tomasr/molokai'
-
-"*****************************************************************************
-"" Custom bundles
-"*****************************************************************************
-
-" python
-"" Python Bundle
-"Plug 'davidhalter/jedi-vim'
-"Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
-
-"*****************************************************************************
-"*****************************************************************************
-
-"" Include user's extra bundle
-if filereadable(expand("~/.vimrc.local.bundles"))
-  source ~/.vimrc.local.bundles
-endif
-
-call plug#end()
-
-" Required:
-filetype plugin indent on
-
-"" General
-set number	"" Show line numbers
-set linebreak	"" Break lines at word (requires Wrap lines)
-set showbreak=+++	"" Wrap-broken line prefix
-set textwidth=80	"" Line wrap (number of cols)
-set showmatch	"" Highlight matching brace
-set visualbell	"" Use visual bell (no beeping)
- 
-set hlsearch	"" Highlight all search results
-set smartcase	"" Enable smart-case search
-set ignorecase	"" Always case-insensitive
-set incsearch	"" Searches for strings incrementally
- 
-set autoindent	"" Auto-indent new lines
-set expandtab	"" Use spaces instead of tabs
-set shiftwidth=2	"" Number of auto-indent spaces
-set smartindent	"" Enable smart-indent
-set smarttab	"" Enable smart-tabs
-set softtabstop=2	"" Number of spaces per Tab
- 
-"" Advanced
-set confirm	"" Prompt confirmation dialogs
-set ruler	"" Show row and column ruler information
- 
-set undolevels=1000	"" Number of undo levels
-set backspace=indent,eol,start	"" Backspace behaviour
-
-if exists('$SHELL')
-    set shell=$SHELL
-else
-    set shell=/bin/sh
-endif
-
-if has("gui_running")
-  if has("gui_mac") || has("gui_macvim")
-    set guifont=Menlo:h12
-    set transparency=7
-  endif
-else
-  let g:CSApprox_loaded = 1
-
-  " IndentLine
-  let g:indentLine_enabled = 1
-  let g:indentLine_concealcursor = 0
-  let g:indentLine_char = '┆'
-  let g:indentLine_faster = 1
-
-  
-  if $COLORTERM == 'gnome-terminal'
-    set term=gnome-256color
-  else
-    if $TERM == 'xterm'
-      set term=xterm-256color
-    endif
-  endif
-  
-endif
-
-set title
-set titleold="Terminal"
-set titlestring=VIM:\ %-25.55F\ %a%r%m titlelen=70
-
-set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
-
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
-
-## Commands
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
-cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qall qall
-
-com! FormatJSON %!python -m json.tool
-
-"" NERDTree configuration
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-nnoremap <silent> <F2> :NERDTreeFind<CR>
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
-
-" jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
-
-" vim-airline
+" plugin: airline (status line)
+Plug 'vim-airline/vim-airline' " airline status line
+Plug 'vim-airline/vim-airline-themes'
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#ale#enabled = 1
@@ -201,43 +29,110 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
+" plugin: afterglow (theme)
+Plug'danilo-augusto/vim-afterglow'
+let g:airline_theme='afterglow'
 
-if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
-  let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
-  let g:airline_right_alt_sep     = '«'
-  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-  let g:airline#extensions#readonly#symbol   = '⊘'
-  let g:airline#extensions#linecolumn#prefix = '¶'
-  let g:airline#extensions#paste#symbol      = 'ρ'
-  let g:airline_symbols.linenr    = '␊'
-  let g:airline_symbols.branch    = '⎇'
-  let g:airline_symbols.paste     = 'ρ'
-  let g:airline_symbols.paste     = 'Þ'
-  let g:airline_symbols.paste     = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
-else
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
+" plugin: nerdtree (file tree)
+Plug 'scrooloose/nerdtree' " shows a file tree
+let g:NERDTreeChDirMode=2
+let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
+let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
+let g:NERDTreeShowBookmarks=1
+let g:nerdtree_tabs_focus_on_files=1
+let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
+let g:NERDTreeWinSize = 50
+" start nerdtree if we bring up vim without specifying a file
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-endif
 
-" Syntax highlight
-" Default highlight is better than polyglot
-let g:polyglot_disabled = ['python']
-let python_highlight_all = 1
+" plugin: fugitive (git integration)
+Plug 'tpope/vim-fugitive' " git integration in file
+
+" pluginS: blacK & iSort (python language tools)
+Plug 'psf/black', { 'tag': '19.10b0' }
+Plug 'fisadev/vim-isort'
+" run isort and black on save
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+  autocmd BufWritePre *.py Isort
+augroup end
+
+call plug#end() 
+
+" END PLUGINS CONFIGURATION "
+
+
+" EDITOR CONFIGURATION "
+" code
+filetype plugin indent on
+set nocompatible
+set shiftwidth=2        " indent width
+set softtabstop=2       " tabs equal 2 space 
+set expandtab           " inserts spaces when tab is pressed
+set smartindent         " indent 'intelligently' 
+set clipboard=unnamedplus "use systemclipboard when available
+
+" search
+set ignorecase          " ignore and smart case help make search 
+set smartcase           " non-case-sensitive unless you put caps in there
+set hlsearch            " highlight all search matches
+
+" display
+syntax on
+colorscheme afterglow
+set showcmd             " show command in bottom bar
+set number              " show line numbers
+set ruler               " show cursor position in line numbers
+set showmatch           " match brackets with colours
+set display+=lastline   " as much as possible of the last line will display
+set backspace=indent,eol,start  " backspace works normally
+set scrolloff=10        " displays 10 lines under scroll
+set splitright          " display split files on the right by default
+
+" saving
+set confirm             " asks for confirmation when exiting
+set undofile            " persistundo history across sessions
+set backup              " create backup files before overwriting
+set undodir=~/.config/nvim/code/undo// 
+set backupdir=~/.config/nvim/code/backup//
+set directory=~/.config/nvim/code/swap//
+
+" folding
+set nofoldenable        " do not display folded code on open
+set foldmethod=indent   " fold methodology is by indentation
+set foldnestmax=10
+set foldlevel=2
+
+" title stuff
+set title
+set titlestring=vim:\ %-25.55F\ %a%r%m titlelen=70
+
+" END EDITOR CONFIGURATION "
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
+
+" ctags
+set tags=./tags;/
+
+" KEY MAPPINGS "
+
+" Map Cmd+LeftArrow to jump back
+nnoremap <D-Left> <C-t>
+
+" Map Cmd+RightArrow to jump fwd
+nnoremap <D-Right> <C-]>
+
+" ':v' instead of ':vs' for vertical split
+cnoreabbrev <expr> v (getcmdtype() == ':' && getcmdline() ==# 'v') ? 'vs' : 'v'
+
+" Nerdtree toggle with Ctrl+N
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" END KEY MAPPINGS "
+
