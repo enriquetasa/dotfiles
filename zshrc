@@ -20,20 +20,20 @@ plugins=(
    history
    thefuck
 )
-ZSH_THEME="clear"
+ZSH_THEME="clean"
 COMPLETION_WAITING_DOTS="true"
-source $ZSH/oh-my-zsh.sh
+source ~/.oh-my-zsh/oh-my-zsh.sh
 
 # aliases
 alias ll="ls -alHG ${colorflag}"
 alias grep="grep --color=auto"
 alias vi="nvim"
-alias zshrc="vim ~/.zshrc"
-alias vimrc="vim ~/.vimrc"
+alias zshrc="nvim ~/.zshrc"
+alias vimrc="nvim ~/.vimrc"
 alias venv="echo 'layout python3' > .envrc && direnv allow"
 
-#
-export EDITOR="vim"
+# vim
+export EDITOR="nvim"
 
 # macOS detection
 if [[ "$OSTYPE" == darwin* ]]; then

@@ -1,63 +1,14 @@
-" EDITOR CONFIGURATION
-
-" code
-filetype plugin indent on
-set shiftwidth=2        " indent width
-set softtabstop=2       " tabs equal 2 space 
-set expandtab           " inserts spaces when tab is pressed
-set smartindent         " indent 'intelligently'
-set clipboard=unnamedplus "use systemclipboard when available
-
-" search
-set ignorecase          " ignore and smart case help make search 
-set smartcase           " non-case-sensitive unless you put caps in there
-set hlsearch            " highlight all search matches
-
-" display
-syntax on " syntax highlight
-set nocompatible
-colorscheme afterglow
-set showcmd             " show command in bottom bar
-set number              " show line numbers
-set ruler               " show cursor position in line numbers
-set showmatch           " match brackets with colours
-set display+=lastline   " as much as possible of the last line will display
-set backspace=indent,eol,start  " backspace works 'normally'
-set scrolloff=10        " displays 10 lines under scroll
-set splitright          " display split files on the right by default
-
-" saving
-set confirm             " asks for confirmation when exiting
-set undofile            " persistundo history across sessions
-set backup              " create backup files before overwriting
-" create necessary directories if they don't exist
-if empty(glob('~/.vim/{undo,backup,swap}'))
-  silent mkdir ~/.vim/{undo,backup,swap} && chmod 700 -R ~/.vim 
-  endif
-set undodir=~/.vim/undo// 
-set backupdir=~/.vim/backup//
-set directory=~/.vim/swap//
-
-" folding
-set nofoldenable        " do not display folded code on open
-set foldmethod=indent   " fold methodology is by indentation
-set foldnestmax=10
-set foldlevel=2
-
-" title 
-set title
-set titlestring=vim:\ %-25.55F\ %a%r%m titlelen=70
-
-" END EDITOR CONFIGURATION "
-
-" PLUGIN CONFIGURATION
+" PLUGIN CONFIGURATION "
 " I currently use a plugin manager called 'plugged'
-" install plug if it isn't installed
+" Install plug if it isn't installed
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim    
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
+
+" Specify a directory for plugins
+call plug#begin('~/.config/nvim/plugged/')
 
 " Specify a directory for plugins
 call plug#begin()
@@ -81,7 +32,7 @@ let g:airline#extensions#virtualenv#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 " plugin: afterglow (theme)
-Plug 'danilo-augusto/vim-afterglow'
+Plug'danilo-augusto/vim-afterglow'
 let g:airline_theme='afterglow'
 
 " plugin: nerdtree (file tree)
@@ -101,7 +52,6 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " plugin: fugitive (git integration)
 Plug 'tpope/vim-fugitive' " git integration in file
 
-
 " pluginS: blacK & iSort (python language tools)
 Plug 'psf/black', { 'tag': '19.10b0' }
 Plug 'fisadev/vim-isort'
@@ -114,10 +64,75 @@ augroup end
 
 call plug#end() 
 
-" END PLUGINS CONFIGURATION
+" END PLUGINS CONFIGURATION "
 
+
+" EDITOR CONFIGURATION "
+" code
+filetype plugin indent on
+set nocompatible
+set shiftwidth=2        " indent width
+set softtabstop=2       " tabs equal 2 space 
+set expandtab           " inserts spaces when tab is pressed
+set smartindent         " indent 'intelligently' 
+set clipboard=unnamedplus "use systemclipboard when available
+
+" search
+set ignorecase          " ignore and smart case help make search 
+set smartcase           " non-case-sensitive unless you put caps in there
+set hlsearch            " highlight all search matches
+
+" display
+syntax on
+colorscheme afterglow
+set showcmd             " show command in bottom bar
+set number              " show line numbers
+set ruler               " show cursor position in line numbers
+set showmatch           " match brackets with colours
+set display+=lastline   " as much as possible of the last line will display
+set backspace=indent,eol,start  " backspace works normally
+set scrolloff=10        " displays 10 lines under scroll
+set splitright          " display split files on the right by default
+
+" saving
+set confirm             " asks for confirmation when exiting
+set undofile            " persistundo history across sessions
+set backup              " create backup files before overwriting
+set undodir=~/.config/nvim/code/undo// 
+set backupdir=~/.config/nvim/code/backup//
+set directory=~/.config/nvim/code/swap//
+
+" folding
+set nofoldenable        " do not display folded code on open
+set foldmethod=indent   " fold methodology is by indentation
+set foldnestmax=10
+set foldlevel=2
+
+" title stuff
+set title
+set titlestring=vim:\ %-25.55F\ %a%r%m titlelen=70
+
+" END EDITOR CONFIGURATION "
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
-" by using ':w!!'
 cmap w!! w !sudo tee > /dev/null %
+
+" ctags
+set tags=./tags;/
+
+" KEY MAPPINGS "
+
+" Map Cmd+LeftArrow to jump back
+nnoremap <D-Left> <C-t>
+
+" Map Cmd+RightArrow to jump fwd
+nnoremap <D-Right> <C-]>
+
+" ':v' instead of ':vs' for vertical split
+cnoreabbrev <expr> v (getcmdtype() == ':' && getcmdline() ==# 'v') ? 'vs' : 'v'
+
+" Nerdtree toggle with Ctrl+N
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" END KEY MAPPINGS "
 
