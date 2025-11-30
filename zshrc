@@ -9,6 +9,8 @@ setopt SHARE_HISTORY             # share history between all sessions.
 setopt HIST_IGNORE_ALL_DUPS      # delete old recorded entry if new entry is a duplicate.
 setopt COMPLETE_ALIASES
 
+# prompt
+export PS1="%{$(tput setaf 39)%}%n%{$(tput setaf 81)%}@%{$(tput setaf 77)%}%m %{$(tput setaf 226)%}%1~ %{$(tput sgr0)%}$ "
 
 # oh my zsh
 plugins=(
