@@ -57,10 +57,9 @@ chsh -s $(which zsh)
 exec zsh
 
 # vim 
-mkdir ~/.vim
-mkdir ~/.vim/{undo,backup,swap}
-cp $DIR/vimrc ~/.vimrc
-export EDITOR='vim'
-export VISUAL='vim'
-vim +PlugInstall +qall
+mkdir ~/.config/nvim/
+cp $DIR/vimrc ~/.config/nvim/init.vim
+export EDITOR='nvim'
+export VISUAL='nvim'
+nvim +PlugInstall +qall
 
