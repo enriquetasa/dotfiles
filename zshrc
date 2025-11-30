@@ -22,7 +22,7 @@ plugins=(
    history
    thefuck
 )
-ZSH_THEME="clean"
+ZSH_THEME="obraun"
 COMPLETION_WAITING_DOTS="true"
 source ~/.oh-my-zsh/oh-my-zsh.sh
 
