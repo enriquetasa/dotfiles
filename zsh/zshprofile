@@ -1,0 +1,38 @@
+### --- SHELL SESSION SECURITY --- ###
+
+# Set default file creation permissions (User: read/write/execute, Group/World: read/execute)
+umask 022
+
+# Limit core dumps for better security/performance
+limit core 0
+
+### --- COMPILER & BUILD FLAGS--- ###
+
+# Help compilers (C/C++, Rust, Go) find Homebrew-installed headers and libraries
+if [[ $(uname -m) == 'arm64' ]]; then
+    export LDFLAGS="-L/opt/homebrew/lib"
+    export CPPFLAGS="-I/opt/homebrew/include"
+    export PKG_CONFIG_PATH="/opt/homebrew/opt/readline/lib/pkgconfig"
+else
+    export LDFLAGS="-L/usr/local/lib"
+    export CPPFLAGS="-I/usr/local/include"
+fi
+
+### --- SSH & KEY MANAGEMENT --- ###
+
+# Start SSH Agent if not running and add your keys
+# This prevents entering your passphrase for every single git pull/push
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s` > /dev/null
+  ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+fi
+
+### --- TMUX AUTO-START --- ###
+# 1. Check if TMUX is installed
+# 2. Check if we are NOT already inside a TMUX session ($TMUX is empty)
+# 3. Check if we are in an interactive shell
+if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -n "$PS1" ]; then
+    # Attach to a session named "main" if it exists, otherwise create it
+    exec tmux new-session -A -s main
+fi
+
