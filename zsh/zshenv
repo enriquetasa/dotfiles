@@ -1,0 +1,47 @@
+# Ensure Homebrew is prioritized in the PATH
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+  # For Apple Silicon Macs
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+  # For Intel Macs
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Set other essential environment variables
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
+
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+# Homebrew: Stop the "Checking for updates" delay every time you run brew
+export HOMEBREW_NO_AUTO_UPDATE=1
+# Homebrew: Opt-out of analytics
+export HOMEBREW_NO_ANALYTICS=1
+
+### --- DYNAMIC HOMEBREW PYTHON PATHING --- ###
+# 1. Locate the latest Homebrew Python version folder
+# We look for the newest directory matching 'python@3.*'
+latest_python_dir=$(ls -d /opt/homebrew/opt/python@3.* 2>/dev/null | sort -V | tail -1)
+
+if [[ -n "$latest_python_dir" ]]; then
+    # Add the bin folder to PATH
+    export PATH="$latest_python_dir/bin:$PATH"
+    
+    # Set global pointers to the specific binaries inside that version folder
+    export PYTHON_GLOBAL="$latest_python_dir/bin/python3"
+    export PIP_GLOBAL="$latest_python_dir/bin/pip3"
+fi
+
+# Python: Prevent Python from writing .pyc files (cleaner folders)
+export PYTHONDONTWRITEBYTECODE=1
+
+### --- COLORS & THEMES --- ###
+
+# Enable colors in 'ls' and other system tools
+export CLICOLOR=1
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+
+# Colorize 'grep' output
+export GREP_COLORS="mt=01;31"
+
