@@ -16,14 +16,14 @@ cp $DIR/zsh/zshprofile ~/.zshprofile
 cp $DIR/zsh/zshrc ~/.zshrc
 echo "OH MY ZSH installed and configured successfully\n\n"
 
-# install homebrew
-read -r -p "Press ENTER to install Homebrew"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-echo "Homebrew installed correctly\n\n"
-
 # git, tmux, python3
 read -r -p "Press ENTER to install CLI tooling"
-brew install git tmux python3 thefuck direnv 
+sudo apt update
+apt upgrade
+apt install git tmux python3 thefuck direnv python3-pip python3-venv \
+     zsh nodejs golang postgresql nginx curl build-essential \
+     ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
+     fzf unzip zip 
 # git setup
 touch ~/.gitconfig
 touch ~/.git_commit_template
@@ -35,12 +35,17 @@ echo "Installed and configured git, tmux and Python\n"
 
 # neovim
 read -r -p "Press ENTER to install neovim environment"
-brew install neovim pyvim fd-find ripgrep fzf unzip zip
+apt install -y neovim pyvim
 mkdir ~/.config/nvim/
 touch ~/.config/nvim/init.vim
 cp $DIR/nvim/init.vim ~/.config/nvim/init.vim
 nvim +PlugInstall +qall
 echo "Installed and configured nvim and its plugins\n"
+
+read -r -p "Cleaning up apt, press ENTER to proceed"
+apt autoremove
+apt autoclean
+echo "apt cleaned up\n"
 
 chsh -s $(which zsh)
 exec zsh
