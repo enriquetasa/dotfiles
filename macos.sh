@@ -1,7 +1,7 @@
-#!/bin/bash 
+#!/bin/bash
 
 # DIR is the directory of this script
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 sudo chmod 777 -R $DIR
 
 read -r -p "Press ENTER to install OH-MY-ZSH"
@@ -23,7 +23,7 @@ echo "Homebrew installed correctly\n\n"
 
 # git, tmux, python3
 read -r -p "Press ENTER to install CLI tooling"
-brew install git tmux python3 thefuck direnv 
+brew install git tmux python3 thefuck direnv
 # git setup
 touch ~/.gitconfig
 touch ~/.git_commit_template
@@ -35,11 +35,10 @@ echo "Installed and configured git, tmux and Python\n"
 
 # neovim
 read -r -p "Press ENTER to install neovim environment"
-brew install neovim pyvim fd-find ripgrep fzf unzip zip
-mkdir ~/.config/nvim/
-touch ~/.config/nvim/init.vim
-cp $DIR/nvim/init.vim ~/.config/nvim/init.vim
-nvim +PlugInstall +qall
+brew install neovim pyvim fd ripgrep fzf unzip zip wget
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
+nvim
 echo "Installed and configured nvim and its plugins\n"
 
 chsh -s $(which zsh)

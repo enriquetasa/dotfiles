@@ -1,7 +1,7 @@
-#!/bin/bash 
+#!/bin/bash
 
 # DIR is the directory of this script
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 sudo chmod 777 -R $DIR
 
 read -r -p "Press ENTER to install OH-MY-ZSH"
@@ -21,9 +21,9 @@ read -r -p "Press ENTER to install CLI tooling"
 sudo apt update
 apt upgrade
 apt install git tmux python3 thefuck direnv python3-pip python3-venv \
-     zsh nodejs golang postgresql nginx curl build-essential \
-     ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
-     fzf unzip zip 
+  zsh nodejs golang postgresql nginx curl build-essential \
+  ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
+  fzf unzip zip
 # git setup
 touch ~/.gitconfig
 touch ~/.git_commit_template
@@ -36,10 +36,9 @@ echo "Installed and configured git, tmux and Python\n"
 # neovim
 read -r -p "Press ENTER to install neovim environment"
 apt install -y neovim pyvim
-mkdir ~/.config/nvim/
-touch ~/.config/nvim/init.vim
-cp $DIR/nvim/init.vim ~/.config/nvim/init.vim
-nvim +PlugInstall +qall
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
+nvim
 echo "Installed and configured nvim and its plugins\n"
 
 read -r -p "Cleaning up apt, press ENTER to proceed"
