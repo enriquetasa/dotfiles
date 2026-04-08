@@ -1,8 +1,7 @@
 [commit]
 	template = ~/.git_commit_template
-[user]
-	name = Enrique Tasa
-	email = tasa@enriquetasa.com
+[include]
+	path = ~/.config/git/config.local
 [pull]
 	rebase = true
 [push]
@@ -10,4 +9,4 @@
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 [rebase]
-        autosquash = true
+	autosquash = true
