@@ -1,0 +1,12 @@
+# OS / editor cruft
+.DS_Store
+
+# Backups created by the install scripts
+*.backup.*
+
+# Archives / downloaded binaries should not live in the repo
+*.tar.gz
+*.zip
+
+# Logs
+*.log

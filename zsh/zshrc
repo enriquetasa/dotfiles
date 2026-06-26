@@ -9,9 +9,6 @@ setopt HIST_IGNORE_ALL_DUPS      # delete old recorded entry if new entry is a d
 setopt COMPLETE_ALIASES
 HISTORY_IGNORE="(ls|cd|pwd|exit|clear|history|fg|bg|jobs)"
 
-# prompt
-export PS1="%{$(tput setaf 39)%}%n%{$(tput setaf 81)%}@%{$(tput setaf 77)%}%m %{$(tput setaf 226)%}%1~ %{$(tput sgr0)%}$ "
-
 # oh my zsh
 plugins=(
    git
@@ -27,7 +24,13 @@ COMPLETION_WAITING_DOTS="true"
 source ~/.oh-my-zsh/oh-my-zsh.sh
 
 # aliases
-alias ll="ls -alHG ${colorflag}"
+# Cross-platform color flag: GNU ls uses --color, BSD/macOS ls uses -G.
+if ls --color=auto >/dev/null 2>&1; then
+   colorflag="--color=auto"
+else
+   colorflag="-G"
+fi
+alias ll="ls -alh ${colorflag}"
 alias grep="grep --color=auto"
 alias vi="nvim"
 alias zshrc="nvim ~/.zshrc"

@@ -33,7 +33,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 cp "$DIR/zsh/zshenv" "$HOME/.zshenv"
-cp "$DIR/zsh/zshprofile" "$HOME/.zshprofile"
+cp "$DIR/zsh/zshprofile" "$HOME/.zprofile"
 cp "$DIR/zsh/zshrc" "$HOME/.zshrc"
 log "Oh My Zsh installed and zsh configured"
 

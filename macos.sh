@@ -20,7 +20,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 cp "$DIR/zsh/zshenv" "$HOME/.zshenv"
-cp "$DIR/zsh/zshprofile" "$HOME/.zshprofile"
+cp "$DIR/zsh/zshprofile" "$HOME/.zprofile"
 cp "$DIR/zsh/zshrc" "$HOME/.zshrc"
 log "Oh My Zsh installed and zsh configured"
 
@@ -41,7 +41,7 @@ log "git, tmux and Python configured"
 
 # Neovim environment + Nerd Font
 read -r -p "Press ENTER to install the Neovim environment"
-brew install neovim fd ripgrep fzf unzip zip wget
+brew install neovim node ruby fd ripgrep fzf unzip zip wget
 brew install --cask font-jetbrains-mono-nerd-font
 mkdir -p "$HOME/.config"
 # Use the dotfiles-tracked config as the single source of truth.
