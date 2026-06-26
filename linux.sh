@@ -1,50 +1,72 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # DIR is the directory of this script
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-sudo chmod 777 -R $DIR
 
-read -r -p "Press ENTER to install OH-MY-ZSH"
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# zsh setup
-touch ~/.zshenv
-touch ~/.zshprofile
-touch ~/.zshrc
-touch ~/.zsh_history
-cp $DIR/zsh/zshenv ~/.zshenv
-cp $DIR/zsh/zshprofile ~/.zshprofile
-cp $DIR/zsh/zshrc ~/.zshrc
-echo "OH MY ZSH installed and configured successfully\n\n"
+log() { printf '\n==> %s\n\n' "$1"; }
 
-# git, tmux, python3
+# Symlink $2 -> $1, backing up anything already at the target.
+backup_and_link() {
+  local src="$1" dst="$2"
+  if [ -L "$dst" ] || [ -e "$dst" ]; then
+    mv "$dst" "${dst}.backup.$(date +%Y%m%d%H%M%S)"
+  fi
+  ln -s "$src" "$dst"
+}
+
+# Install JetBrainsMono Nerd Font into the user font dir.
+install_nerd_font() {
+  local font_dir="$HOME/.local/share/fonts"
+  mkdir -p "$font_dir"
+  local tmp
+  tmp="$(mktemp -d)"
+  wget -qO "$tmp/JetBrainsMono.zip" \
+    https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+  unzip -o "$tmp/JetBrainsMono.zip" -d "$font_dir" >/dev/null
+  rm -rf "$tmp"
+  fc-cache -f >/dev/null
+}
+
+read -r -p "Press ENTER to install Oh My Zsh"
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+cp "$DIR/zsh/zshenv" "$HOME/.zshenv"
+cp "$DIR/zsh/zshprofile" "$HOME/.zshprofile"
+cp "$DIR/zsh/zshrc" "$HOME/.zshrc"
+log "Oh My Zsh installed and zsh configured"
+
+# CLI tooling
 read -r -p "Press ENTER to install CLI tooling"
 sudo apt update
-apt upgrade
-apt install git tmux python3 thefuck direnv python3-pip python3-venv \
+sudo apt upgrade -y
+sudo apt install -y git tmux python3 thefuck direnv python3-pip python3-venv \
   zsh nodejs golang postgresql nginx curl build-essential \
   ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
-  fzf unzip zip
-# git setup
-touch ~/.gitconfig
-touch ~/.git_commit_template
-touch ~/.tmux.conf
-cp $DIR/git/gitconfig ~/.gitconfig
-cp $DIR/git/git_commit_template.txt ~/.git_commit_template
-cp $DIR/tmux/tmux.conf ~/.tmux.conf
-echo "Installed and configured git, tmux and Python\n"
+  fzf unzip zip fontconfig
+cp "$DIR/git/gitconfig" "$HOME/.gitconfig"
+cp "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
+cp "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+log "git, tmux and Python configured"
 
-# neovim
-read -r -p "Press ENTER to install neovim environment"
-apt install -y neovim pyvim
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
-nvim
-echo "Installed and configured nvim and its plugins\n"
+# Neovim environment + Nerd Font
+read -r -p "Press ENTER to install the Neovim environment"
+sudo apt install -y neovim
+install_nerd_font
+mkdir -p "$HOME/.config"
+# Use the dotfiles-tracked config as the single source of truth.
+backup_and_link "$DIR/nvim" "$HOME/.config/nvim"
+# Install/sync plugins headlessly so the first real launch is ready to go.
+nvim --headless "+Lazy! sync" +qa || true
+log "Neovim installed and config symlinked. Set 'JetBrainsMono Nerd Font' as your terminal font."
 
-read -r -p "Cleaning up apt, press ENTER to proceed"
-apt autoremove
-apt autoclean
-echo "apt cleaned up\n"
+# Cleanup
+read -r -p "Press ENTER to clean up apt"
+sudo apt autoremove -y
+sudo apt autoclean
 
-chsh -s $(which zsh)
+# Default shell
+read -r -p "Press ENTER to set zsh as the default shell"
+chsh -s "$(command -v zsh)" || true
 exec zsh

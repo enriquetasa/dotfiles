@@ -1,45 +1,56 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # DIR is the directory of this script
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-sudo chmod 777 -R $DIR
 
-read -r -p "Press ENTER to install OH-MY-ZSH"
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# zsh setup
-touch ~/.zshenv
-touch ~/.zshprofile
-touch ~/.zshrc
-touch ~/.zsh_history
-cp $DIR/zsh/zshenv ~/.zshenv
-cp $DIR/zsh/zshprofile ~/.zshprofile
-cp $DIR/zsh/zshrc ~/.zshrc
-echo "OH MY ZSH installed and configured successfully\n\n"
+log() { printf '\n==> %s\n\n' "$1"; }
 
-# install homebrew
+# Symlink $2 -> $1, backing up anything already at the target.
+backup_and_link() {
+  local src="$1" dst="$2"
+  if [ -L "$dst" ] || [ -e "$dst" ]; then
+    mv "$dst" "${dst}.backup.$(date +%Y%m%d%H%M%S)"
+  fi
+  ln -s "$src" "$dst"
+}
+
+read -r -p "Press ENTER to install Oh My Zsh"
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+cp "$DIR/zsh/zshenv" "$HOME/.zshenv"
+cp "$DIR/zsh/zshprofile" "$HOME/.zshprofile"
+cp "$DIR/zsh/zshrc" "$HOME/.zshrc"
+log "Oh My Zsh installed and zsh configured"
+
+# Homebrew
 read -r -p "Press ENTER to install Homebrew"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-echo "Homebrew installed correctly\n\n"
+if ! command -v brew >/dev/null 2>&1; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+log "Homebrew ready"
 
 # git, tmux, python3
 read -r -p "Press ENTER to install CLI tooling"
 brew install git tmux python3 thefuck direnv
-# git setup
-touch ~/.gitconfig
-touch ~/.git_commit_template
-touch ~/.tmux.conf
-cp $DIR/git/gitconfig ~/.gitconfig
-cp $DIR/git/git_commit_template.txt ~/.git_commit_template
-cp $DIR/tmux/tmux.conf ~/.tmux.conf
-echo "Installed and configured git, tmux and Python\n"
+cp "$DIR/git/gitconfig" "$HOME/.gitconfig"
+cp "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
+cp "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+log "git, tmux and Python configured"
 
-# neovim
-read -r -p "Press ENTER to install neovim environment"
-brew install neovim pyvim fd ripgrep fzf unzip zip wget
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
-nvim
-echo "Installed and configured nvim and its plugins\n"
+# Neovim environment + Nerd Font
+read -r -p "Press ENTER to install the Neovim environment"
+brew install neovim fd ripgrep fzf unzip zip wget
+brew install --cask font-jetbrains-mono-nerd-font
+mkdir -p "$HOME/.config"
+# Use the dotfiles-tracked config as the single source of truth.
+backup_and_link "$DIR/nvim" "$HOME/.config/nvim"
+# Install/sync plugins headlessly so the first real launch is ready to go.
+nvim --headless "+Lazy! sync" +qa || true
+log "Neovim installed and config symlinked. Set 'JetBrainsMono Nerd Font' as your terminal font."
 
-chsh -s $(which zsh)
+# Default shell
+read -r -p "Press ENTER to set zsh as the default shell"
+chsh -s "$(command -v zsh)" || true
 exec zsh
