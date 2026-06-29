@@ -1,124 +1,94 @@
 # dotfiles
 
-Personal shell, Git, and Neovim configuration. Paths and tooling follow XDG-style locations and **what is on your `PATH`**, not a single vendor OS.
+Personal shell, Git, tmux, and Neovim configuration. The install scripts **symlink** the tracked configs into place, so editing a file in this repo updates your live config immediately.
 
 ## Clone and go
 
 ```bash
 git clone <YOUR_REPO_URL> ~/.dotfiles
 cd ~/.dotfiles
-chmod +x setup.sh
-./setup.sh
+./macos.sh      # on macOS
+./linux.sh      # on Debian/Ubuntu Linux
 ```
 
-Non-interactive (no “Press Enter”, good for scripts / cloud-init):
+Each script is interactive: it pauses with "Press ENTER" before each stage (Oh My Zsh, package manager, CLI tooling, Neovim, default shell) so you can watch what it does. Existing files at a target path are backed up to `<file>.backup.<timestamp>` before the symlink is created.
 
-```bash
-DOTFILES_NONINTERACTIVE=1 ./setup.sh
-```
-
-Full system / Homebrew upgrades (everything on the box, not just these tools) are **off by default**. To run them:
-
-```bash
-DOTFILES_FULL_UPGRADE=1 ./setup.sh
-```
-
-Set Git identity without editing a file (optional):
-
-```bash
-GIT_AUTHOR_NAME='Your Name' GIT_AUTHOR_EMAIL='you@example.com' ./setup.sh
-```
-
-The first run creates `~/.config/git/config.local` from `git/config.local.example` if that file does not exist. **Change name and email there** (or use the env vars above) before making commits.
+On the first run the script creates `~/.config/git/config.local` from `git/config.local.example`. **Set your name and email there before committing** — it is intentionally machine-local and not tracked.
 
 ## What is here
 
-| File | Role |
+| Path | Role |
 |------|------|
-| `setup.sh` | Installs packages when it can, Oh My Zsh, Git/zsh/nvim configs, Python tools for Neovim, `PlugInstall` |
-| `gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` (see `git/config.local.example`) |
-| `zshrc` | Zsh + optional Oh My Zsh plugins when `direnv` / `thefuck` exist |
-| `vimrc` | Neovim: `stdpath('data')` for plugins, `stdpath('state')` for undo/backup/swap |
-| `git_commit_template.txt` | Commit message template |
-| `LICENSE` | GNU GPL v3+ (full text; copyleft) |
-| `legacy/` | Older configs |
+| `macos.sh` | macOS bootstrap: Oh My Zsh, Homebrew, CLI tooling, Neovim + Nerd Font, default shell |
+| `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, downloads the Nerd Font manually |
+| `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
+| `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, locale, colors |
+| `zsh/zshprofile` | umask, compiler flags, ssh-agent bootstrap, tmux auto-attach |
+| `git/gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` |
+| `git/config.local.example` | Template for your machine-local Git identity |
+| `git/git_commit_template.txt` | Commit message template |
+| `tmux/tmux.conf` | tmux configuration |
+| `nvim/` | Neovim config (LazyVim, Lua) — symlinked to `~/.config/nvim` |
+| `legacy/` | Older configs, kept for reference |
+| `LICENSE` | GNU GPL v3+ (copyleft) |
+
+All of the above (except the seeded `config.local`) are symlinked into your home directory, so the repo stays the single source of truth.
 
 ## Automated setup details
 
-**Linux:** `apt-get`, `dnf`, or `pacman` (first match). If none match, package installs are skipped; you still need `git`, `curl`, `zsh`, `neovim`, etc. for a full setup.
+**macOS:** [Homebrew](https://brew.sh/) is installed if missing, then `git`, `tmux`, `python3`, `thefuck`, `direnv`, `neovim`, `node`, `ruby`, `fd`, `ripgrep`, `fzf`, and friends.
 
-**macOS:** [Homebrew](https://brew.sh/) (installed if missing).
+**Linux:** packages are installed with `apt` (Debian/Ubuntu). For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
 
-`thefuck` is installed from the distro when possible; otherwise `pip3 install --user` is tried.
+After Neovim is installed, the script symlinks `nvim/` to `~/.config/nvim` and runs `nvim --headless "+Lazy! sync" +qa` so [LazyVim](https://www.lazyvim.org/) plugins are installed before your first launch. There is no vim-plug step — this config is pure Lua / lazy.nvim.
 
-After Neovim is available, **`pynvim`**, **`black`**, and **`isort`** are installed with `pip3` (user site) so Python-related editor features match your `vimrc`.
+### tmux
+
+`tmux/tmux.conf` is symlinked to `~/.tmux.conf`. `zsh/zshprofile` auto-attaches an interactive shell to a tmux session named `main` (creating it if needed), so new terminals drop straight into tmux. Remove that block in `zsh/zshprofile` if you'd rather start tmux manually.
 
 ### Terminal font (JetBrains Mono Nerd Font)
 
-Setup installs a **Nerd Font** build of **JetBrains Mono** so powerline-style symbols (e.g. airline) render correctly:
+The scripts install a **Nerd Font** build of **JetBrains Mono** so powerline-style symbols render correctly:
 
 - **macOS:** Homebrew cask `font-jetbrains-mono-nerd-font`.
-- **Arch (pacman):** package `ttf-jetbrains-mono-nerd`.
-- **Other Linux:** fonts are unpacked under `~/.local/share/fonts/jetbrains-mono-nerd/` and the font cache is refreshed with `fc-cache` when available.
+- **Linux:** the latest `JetBrainsMono.zip` from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) is unpacked into `~/.local/share/fonts/` and the cache is refreshed with `fc-cache`.
 
-Then choose that font in your terminal profile (e.g. **Terminal.app** → Settings → Profiles → Font; **GNOME Terminal** → Preferences → profile → Custom font). The picker name is usually along the lines of **“JetBrainsMono Nerd Font”** or **“JetBrainsMono NF”**.
-
-## License
-
-Copyright © 2026 Enrique Tasa. This repository is licensed under the **GNU General Public License v3.0 or later**. See [`LICENSE`](LICENSE) for the full terms (copyleft).
+Then select that font in your terminal profile (e.g. **Terminal.app** → Settings → Profiles → Font; **GNOME Terminal** → Preferences → profile → Custom font). The picker name is usually **"JetBrainsMono Nerd Font"** or **"JetBrainsMono NF"**.
 
 ## Manual install
 
+If you don't want to run the full script, symlink the pieces you want:
+
 ```bash
-cp zshrc ~/.zshrc
-mkdir -p ~/.config/git ~/.config/nvim
-cp git/config.local.example ~/.config/git/config.local
+DOTFILES="$PWD"   # run from the repo root
+
+ln -sf "$DOTFILES/zsh/zshenv"    ~/.zshenv
+ln -sf "$DOTFILES/zsh/zshprofile" ~/.zprofile
+ln -sf "$DOTFILES/zsh/zshrc"     ~/.zshrc
+
+ln -sf "$DOTFILES/git/gitconfig"             ~/.gitconfig
+ln -sf "$DOTFILES/git/git_commit_template.txt" ~/.git_commit_template
+mkdir -p ~/.config/git
+cp "$DOTFILES/git/config.local.example" ~/.config/git/config.local
 # edit ~/.config/git/config.local — set name and email
-cp gitconfig ~/.gitconfig
-cp git_commit_template.txt ~/.git_commit_template
-cp vimrc ~/.config/nvim/init.vim
-ln -sf ~/.config/nvim/init.vim ~/.vimrc
-pip3 install --user pynvim 'black>=24' 'isort>=5'
-nvim +PlugInstall +qall
+
+ln -sf "$DOTFILES/tmux/tmux.conf" ~/.tmux.conf
+
+ln -sf "$DOTFILES/nvim" ~/.config/nvim
+nvim --headless "+Lazy! sync" +qa
 ```
 
-**Font (manual):** macOS: `brew install --cask font-jetbrains-mono-nerd-font`. Arch: `sudo pacman -S ttf-jetbrains-mono-nerd`. Else: same zip URL as in `setup.sh` (`NERD_FONTS_JETBRAINS_TAG` + `JetBrainsMono.zip` from [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases)), unpack under `~/.local/share/fonts/` and run `fc-cache -f ~/.local/share/fonts`.
+**Font (manual):** macOS: `brew install --cask font-jetbrains-mono-nerd-font`. Linux: download `JetBrainsMono.zip` from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases), unpack into `~/.local/share/fonts/`, and run `fc-cache -f`.
 
-Use a recent Neovim with Lua (`mini.pairs`).
+Use a recent Neovim (0.9+) — the config is Lua-based and built on LazyVim.
 
-## Environment overrides (optional)
+## License
 
-| Variable | Effect |
-|----------|--------|
-| `DOTFILES_NONINTERACTIVE` | If set, skip the “Press Enter” pause |
-| `DOTFILES_FULL_UPGRADE` | If set, run `apt-get upgrade` / `dnf upgrade` / `pacman -Syu` / `brew upgrade` (otherwise only install/sync what this script needs) |
-| `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` | Written to `~/.config/git/config.local` on first run when that file is missing |
-| `PYTHON_GLOBAL_OVERRIDE` / `PIP_GLOBAL_OVERRIDE` | Force `PYTHON_GLOBAL` / `PIP_GLOBAL` in zsh |
-| `DOTFILES_NVIM_PYTHON3` | Python 3 binary for Neovim if set before launching `nvim` |
-| `PYTHON_GLOBAL` | If exported before `nvim`, preferred over `python3` on `PATH` for `g:python3_host_prog` |
+Copyright © 2026 Enrique Tasa. Licensed under the **GNU General Public License v3.0 or later**. See [`LICENSE`](LICENSE) for the full terms.
 
-## Upgrading from an older `gitconfig` with `[user]` in-repo
-
-If you previously committed `name` / `email` inside `gitconfig`, move them into `~/.config/git/config.local`:
-
-```ini
-[user]
-	name = Your Name
-	email = you@example.com
-```
-
-Keep `gitconfig` in the repo without a `[user]` section so the repo stays safe to publish.
-
-## Migrating Neovim layout
-
-- vim-plug and plugins live under **`stdpath('data')`** (often `~/.local/share/nvim/plugged`).
-- Undo/backup/swap use **`stdpath('state')`** on Neovim 0.8+ (often `~/.local/state/nvim/...`).
-
-Run `nvim +PlugInstall +qall` after updating.
-
-## What “clone and go” still assumes
+## What "clone and go" still assumes
 
 - **sudo** where the package manager needs it (Linux; `chsh` may prompt for your password).
-- A network connection for package managers, Oh My Zsh, vim-plug, font downloads (non-Arch Linux), and `PlugInstall`.
-- You still **select the installed Nerd Font** in your terminal emulator’s settings (the script cannot flip that for every app).
+- A network connection for package managers, Oh My Zsh, LazyVim plugin sync, and the font download.
+- You still **select the installed Nerd Font** in your terminal emulator's settings — the script can't flip that for every app.
 - **SSH keys / Git hosting auth** are yours to configure; this repo only rewrites `https://github.com/` to `ssh://git@github.com/` in Git config.

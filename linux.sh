@@ -32,22 +32,33 @@ read -r -p "Press ENTER to install Oh My Zsh"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
-cp "$DIR/zsh/zshenv" "$HOME/.zshenv"
-cp "$DIR/zsh/zshprofile" "$HOME/.zprofile"
-cp "$DIR/zsh/zshrc" "$HOME/.zshrc"
+backup_and_link "$DIR/zsh/zshenv" "$HOME/.zshenv"
+backup_and_link "$DIR/zsh/zshprofile" "$HOME/.zprofile"
+backup_and_link "$DIR/zsh/zshrc" "$HOME/.zshrc"
 log "Oh My Zsh installed and zsh configured"
 
 # CLI tooling
 read -r -p "Press ENTER to install CLI tooling"
 sudo apt update
 sudo apt upgrade -y
-sudo apt install -y git tmux python3 thefuck direnv python3-pip python3-venv \
+sudo apt install -y git tmux python3 direnv python3-pip python3-venv \
   zsh nodejs golang postgresql nginx curl build-essential \
   ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
   fzf unzip zip fontconfig
-cp "$DIR/git/gitconfig" "$HOME/.gitconfig"
-cp "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
-cp "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+# thefuck is not packaged on newer Debian/Ubuntu; try apt, then pip, without failing setup.
+sudo apt install -y thefuck 2>/dev/null \
+  || pip3 install --user thefuck 2>/dev/null \
+  || pip3 install --user --break-system-packages thefuck 2>/dev/null \
+  || log "Skipped thefuck (install it manually if you want it)."
+backup_and_link "$DIR/git/gitconfig" "$HOME/.gitconfig"
+backup_and_link "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
+backup_and_link "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+# Git identity is per-machine: seed it from the tracked example, never symlink it.
+mkdir -p "$HOME/.config/git"
+if [ ! -f "$HOME/.config/git/config.local" ]; then
+  cp "$DIR/git/config.local.example" "$HOME/.config/git/config.local"
+  log "Created ~/.config/git/config.local — set your name and email there before committing."
+fi
 log "git, tmux and Python configured"
 
 # Neovim environment + Nerd Font
