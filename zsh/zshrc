@@ -52,6 +52,7 @@ vimrc() { _dotfiles_editor "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/init.vim"; }
 
 if command -v nvim >/dev/null 2>&1; then
   alias vi="nvim"
+  alias vim="nvim"
 elif command -v vim >/dev/null 2>&1; then
   alias vi="vim"
 fi
@@ -86,3 +87,18 @@ if [[ -n "${PIP_GLOBAL_OVERRIDE:-}" ]] && [[ -x "${PIP_GLOBAL_OVERRIDE}" ]]; the
 elif [[ -z "${PIP_GLOBAL:-}" ]] || [[ ! -x "${PIP_GLOBAL}" ]]; then
   command -v pip3 >/dev/null 2>&1 && export PIP_GLOBAL="$(command -v pip3)"
 fi
+
+# rbenv (Ruby version management) when present
+if command -v rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init - zsh)"
+fi
+
+# Git repo-archaeology helpers
+alias what_changed="git log --format=format: --name-only --since='1 year ago' | sort | uniq -c | sort -nr | head -20"
+alias who_built="git shortlog -sn --no-merges"
+alias where_bugs="git log -i -E --grep='fix|bug|broken' --name-only --format='' | sort | uniq -c | sort -nr | head -20"
+alias commit_count="git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c"
+alias firefighting="git log --oneline --since='1 year ago' | grep -iE 'revert|hotfix|emergency|rollback|incident'"
+
+# Machine-local overrides (PATHs, work config, terminal integrations) — not tracked in the repo
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

@@ -36,6 +36,11 @@ fi
 # Python: Prevent Python from writing .pyc files (cleaner folders)
 export PYTHONDONTWRITEBYTECODE=1
 
+### --- USER-LOCAL BINARIES --- ###
+# Prepend user bin dirs when they exist (no-ops on machines without them)
+[[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+[[ -d "$HOME/.gem/bin" ]] && export PATH="$HOME/.gem/bin:$PATH"
+
 ### --- COLORS & THEMES --- ###
 
 # Enable colors in 'ls' and other system tools
