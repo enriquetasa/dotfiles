@@ -33,7 +33,9 @@ else
   alias ll="command ls -alh"
 fi
 
-if command grep --color=auto -q . /dev/null 2>&1; then
+# Probe against real input: an empty file never matches, so exit code
+# only reflects whether --color=auto is supported.
+if printf x | command grep --color=auto -q x 2>/dev/null; then
   alias grep="grep --color=auto"
 fi
 
@@ -59,33 +61,14 @@ fi
 
 alias venv="echo 'layout python3' > .envrc && direnv allow"
 
-# Editor (use whatever nvim is on PATH)
-if command -v nvim >/dev/null 2>&1; then
-  export EDITOR="nvim"
-  export VISUAL="nvim"
-elif command -v vim >/dev/null 2>&1; then
-  export EDITOR="vim"
-  export VISUAL="vim"
-fi
+# EDITOR/VISUAL and PYTHON_GLOBAL/PIP_GLOBAL are set in zshprofile (login
+# shells), after PATH construction — keep them in one place.
 
 # VS Code: PATH shim when present; else macOS app bundle
 if ! command -v code >/dev/null 2>&1; then
   if [[ "${OSTYPE}" == darwin* ]] && [[ -d "/Applications/Visual Studio Code.app" ]]; then
     alias code='open -a "Visual Studio Code"'
   fi
-fi
-
-# Python/pip on PATH; override with PYTHON_GLOBAL_OVERRIDE / PIP_GLOBAL_OVERRIDE
-if [[ -n "${PYTHON_GLOBAL_OVERRIDE:-}" ]] && [[ -x "${PYTHON_GLOBAL_OVERRIDE}" ]]; then
-  export PYTHON_GLOBAL="${PYTHON_GLOBAL_OVERRIDE}"
-elif [[ -z "${PYTHON_GLOBAL:-}" ]] || [[ ! -x "${PYTHON_GLOBAL}" ]]; then
-  command -v python3 >/dev/null 2>&1 && export PYTHON_GLOBAL="$(command -v python3)"
-fi
-
-if [[ -n "${PIP_GLOBAL_OVERRIDE:-}" ]] && [[ -x "${PIP_GLOBAL_OVERRIDE}" ]]; then
-  export PIP_GLOBAL="${PIP_GLOBAL_OVERRIDE}"
-elif [[ -z "${PIP_GLOBAL:-}" ]] || [[ ! -x "${PIP_GLOBAL}" ]]; then
-  command -v pip3 >/dev/null 2>&1 && export PIP_GLOBAL="$(command -v pip3)"
 fi
 
 # rbenv (Ruby version management) when present
