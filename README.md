@@ -22,8 +22,8 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 | `macos.sh` | macOS bootstrap: Oh My Zsh, Homebrew, CLI tooling, Neovim + Nerd Font, default shell |
 | `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, downloads the Nerd Font manually |
 | `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
-| `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, locale, colors |
-| `zsh/zshprofile` | umask, compiler flags, ssh-agent bootstrap, tmux auto-attach |
+| `zsh/zshenv` | Cheap env vars for every zsh: locale, colors, Homebrew/Python flags |
+| `zsh/zshprofile` | Login-shell setup: PATH (Homebrew + Python), editor, umask, compiler flags, ssh-agent, tmux auto-attach |
 | `git/gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` |
 | `git/config.local.example` | Template for your machine-local Git identity |
 | `git/git_commit_template.txt` | Commit message template |
