@@ -28,10 +28,25 @@ backup_and_link() {
   ln -s "$src" "$dst"
 }
 
+# Oh My Zsh custom plugins; zshrc enables them when the directories exist.
+install_omz_plugins() {
+  local custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+  local repo
+  for repo in zsh-autosuggestions zsh-syntax-highlighting; do
+    if [ ! -d "$custom/plugins/$repo" ]; then
+      # Plain https clone even if gitconfig rewrites github to SSH —
+      # fresh machines have no SSH keys yet.
+      GIT_CONFIG_GLOBAL=/dev/null git clone --depth=1 \
+        "https://github.com/zsh-users/$repo" "$custom/plugins/$repo"
+    fi
+  done
+}
+
 pause "install Oh My Zsh"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
+install_omz_plugins
 backup_and_link "$DIR/zsh/zshenv" "$HOME/.zshenv"
 backup_and_link "$DIR/zsh/zshprofile" "$HOME/.zprofile"
 backup_and_link "$DIR/zsh/zshrc" "$HOME/.zshrc"
@@ -51,9 +66,9 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 log "Homebrew ready"
 
-# git, tmux, python3
-pause "install CLI tooling"
-brew install git tmux python3 thefuck direnv
+# All packages come from the Brewfile — one declarative, diffable list.
+pause "install packages from the Brewfile"
+brew bundle --file="$DIR/Brewfile"
 backup_and_link "$DIR/git/gitconfig" "$HOME/.gitconfig"
 backup_and_link "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
 backup_and_link "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
@@ -65,10 +80,8 @@ if [ ! -f "$HOME/.config/git/config.local" ]; then
 fi
 log "git, tmux and Python configured"
 
-# Neovim environment + Nerd Font
-pause "install the Neovim environment"
-brew install neovim node ruby fd ripgrep fzf unzip zip wget
-brew install --cask font-jetbrains-mono-nerd-font
+# Neovim config (packages and the Nerd Font came from the Brewfile)
+pause "set up Neovim"
 mkdir -p "$HOME/.config"
 # Use the dotfiles-tracked config as the single source of truth.
 backup_and_link "$DIR/nvim" "$HOME/.config/nvim"

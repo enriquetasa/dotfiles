@@ -71,10 +71,25 @@ ensure_neovim() {
   rm -rf "$tmp"
 }
 
+# Oh My Zsh custom plugins; zshrc enables them when the directories exist.
+install_omz_plugins() {
+  local custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+  local repo
+  for repo in zsh-autosuggestions zsh-syntax-highlighting; do
+    if [ ! -d "$custom/plugins/$repo" ]; then
+      # Plain https clone even if gitconfig rewrites github to SSH —
+      # fresh machines have no SSH keys yet.
+      GIT_CONFIG_GLOBAL=/dev/null git clone --depth=1 \
+        "https://github.com/zsh-users/$repo" "$custom/plugins/$repo"
+    fi
+  done
+}
+
 pause "install Oh My Zsh"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
+install_omz_plugins
 backup_and_link "$DIR/zsh/zshenv" "$HOME/.zshenv"
 backup_and_link "$DIR/zsh/zshprofile" "$HOME/.zprofile"
 backup_and_link "$DIR/zsh/zshrc" "$HOME/.zshrc"
@@ -84,8 +99,10 @@ log "Oh My Zsh installed and zsh configured"
 pause "install CLI tooling"
 sudo apt update
 sudo apt upgrade -y
+# Dev-environment tooling only; server/project software (nginx,
+# postgres, go, ...) belongs to each project, not the dotfiles.
 sudo apt install -y git tmux python3 direnv python3-pip python3-venv \
-  zsh nodejs golang postgresql nginx curl build-essential \
+  zsh nodejs curl build-essential \
   ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
   fzf unzip zip fontconfig
 # thefuck is not packaged on newer Debian/Ubuntu; try apt, then pip, without failing setup.

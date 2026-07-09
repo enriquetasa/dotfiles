@@ -19,9 +19,10 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 
 | Path | Role |
 |------|------|
-| `macos.sh` | macOS bootstrap: Oh My Zsh, Homebrew, CLI tooling, Neovim + Nerd Font, default shell |
+| `macos.sh` | macOS bootstrap: Oh My Zsh, Homebrew, `Brewfile` packages, Neovim, default shell |
 | `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, downloads the Nerd Font manually |
-| `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
+| `Brewfile` | Declarative package list for macOS (`brew bundle`) |
+| `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on what's installed (`direnv`, `thefuck`, autosuggestions, syntax highlighting); fzf keybindings |
 | `zsh/zshenv` | Cheap env vars for every zsh: locale, colors, Homebrew/Python flags |
 | `zsh/zshprofile` | Login-shell setup: PATH (Homebrew + Python), editor, umask, compiler flags, ssh-agent, tmux auto-attach |
 | `git/gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` |
@@ -36,9 +37,11 @@ All of the above (except the seeded `config.local`) are symlinked into your home
 
 ## Automated setup details
 
-**macOS:** [Homebrew](https://brew.sh/) is installed if missing, then `git`, `tmux`, `python3`, `thefuck`, `direnv`, `neovim`, `node`, `ruby`, `fd`, `ripgrep`, `fzf`, and friends.
+**macOS:** [Homebrew](https://brew.sh/) is installed if missing, then everything in [`Brewfile`](Brewfile) via `brew bundle` — git, tmux, python, neovim, node, ruby, fd, ripgrep, fzf, the Nerd Font, and friends. Edit the `Brewfile` to change the package set.
 
-**Linux:** packages are installed with `apt` (Debian/Ubuntu). For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
+**Linux:** packages are installed with `apt` (Debian/Ubuntu). If apt's Neovim is older than 0.9 (LazyVim's minimum), the script installs the latest release tarball to `/opt/nvim` instead. For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
+
+Both scripts clone the [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) and [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) plugins into Oh My Zsh's custom plugin directory; `zshrc` enables them (plus fzf's Ctrl-R / Ctrl-T keybindings) only when present.
 
 After Neovim is installed, the script symlinks `nvim/` to `~/.config/nvim` and runs `nvim --headless "+Lazy! sync" +qa` so [LazyVim](https://www.lazyvim.org/) plugins are installed before your first launch. There is no vim-plug step — this config is pure Lua / lazy.nvim.
 
