@@ -1,3 +1,5 @@
+[init]
+	defaultBranch = main
 [commit]
 	template = ~/.git_commit_template
 [include]
@@ -6,7 +8,16 @@
 	rebase = true
 [push]
 	autoSetupRemote = true
+[fetch]
+	prune = true
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	algorithm = histogram
+[rerere]
+	enabled = true
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 [rebase]
 	autosquash = true
+	updateRefs = true

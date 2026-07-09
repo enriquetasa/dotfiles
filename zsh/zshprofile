@@ -1,3 +1,6 @@
+# Sourced by login shells, after zshenv and before zshrc.
+# PATH construction and one-off session setup live here.
+
 ### --- SHELL SESSION SECURITY --- ###
 
 # Set default file creation permissions (User: read/write/execute, Group/World: read/execute)
@@ -6,33 +9,96 @@ umask 022
 # Limit core dumps for better security/performance
 limit core 0
 
-### --- COMPILER & BUILD FLAGS--- ###
+### --- HOMEBREW & PATH --- ###
+
+# Ensure Homebrew is prioritized in the PATH (Apple Silicon or Intel)
+if [[ -x "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x "/usr/local/bin/brew" ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Prepend user bin dirs when they exist (no-ops on machines without them)
+[[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+[[ -d "$HOME/.gem/bin" ]] && export PATH="$HOME/.gem/bin:$PATH"
+
+### --- DYNAMIC HOMEBREW PYTHON PATHING --- ###
+
+# Put the newest Homebrew python@3.x first on PATH and point the
+# PYTHON_GLOBAL / PIP_GLOBAL markers at it. HOMEBREW_PREFIX comes from
+# `brew shellenv` above, so this works on Apple Silicon and Intel alike.
+if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+  _latest_python_dir=$(ls -d "$HOMEBREW_PREFIX"/opt/python@3.* 2>/dev/null | sort -V | tail -1)
+  if [[ -n "$_latest_python_dir" ]]; then
+    export PATH="$_latest_python_dir/bin:$PATH"
+    export PYTHON_GLOBAL="$_latest_python_dir/bin/python3"
+    export PIP_GLOBAL="$_latest_python_dir/bin/pip3"
+  fi
+  unset _latest_python_dir
+fi
+
+# Overrides win; otherwise fall back to whatever python3/pip3 is on PATH
+if [[ -n "${PYTHON_GLOBAL_OVERRIDE:-}" ]] && [[ -x "${PYTHON_GLOBAL_OVERRIDE}" ]]; then
+  export PYTHON_GLOBAL="${PYTHON_GLOBAL_OVERRIDE}"
+elif [[ -z "${PYTHON_GLOBAL:-}" ]] || [[ ! -x "${PYTHON_GLOBAL}" ]]; then
+  command -v python3 >/dev/null 2>&1 && export PYTHON_GLOBAL="$(command -v python3)"
+fi
+
+if [[ -n "${PIP_GLOBAL_OVERRIDE:-}" ]] && [[ -x "${PIP_GLOBAL_OVERRIDE}" ]]; then
+  export PIP_GLOBAL="${PIP_GLOBAL_OVERRIDE}"
+elif [[ -z "${PIP_GLOBAL:-}" ]] || [[ ! -x "${PIP_GLOBAL}" ]]; then
+  command -v pip3 >/dev/null 2>&1 && export PIP_GLOBAL="$(command -v pip3)"
+fi
+
+### --- EDITOR --- ###
+
+# Detected after PATH setup so Homebrew's nvim is found
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR="nvim"
+elif command -v vim >/dev/null 2>&1; then
+  export EDITOR="vim"
+else
+  export EDITOR="vi"
+fi
+export VISUAL="$EDITOR"
+
+### --- COMPILER & BUILD FLAGS --- ###
 
 # Help compilers (C/C++, Rust, Go) find Homebrew-installed headers and libraries
-if [[ $(uname -m) == 'arm64' ]]; then
-    export LDFLAGS="-L/opt/homebrew/lib"
-    export CPPFLAGS="-I/opt/homebrew/include"
-    export PKG_CONFIG_PATH="/opt/homebrew/opt/readline/lib/pkgconfig"
-else
-    export LDFLAGS="-L/usr/local/lib"
-    export CPPFLAGS="-I/usr/local/include"
+if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+  export LDFLAGS="-L$HOMEBREW_PREFIX/lib"
+  export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
+  export PKG_CONFIG_PATH="$HOMEBREW_PREFIX/opt/readline/lib/pkgconfig"
 fi
 
 ### --- SSH & KEY MANAGEMENT --- ###
+# Avoid typing the key passphrase for every git pull/push.
 
-# Start SSH Agent if not running and add your keys
-# This prevents entering your passphrase for every single git pull/push
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval `ssh-agent -s` > /dev/null
-  ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+if [[ "$OSTYPE" == darwin* ]]; then
+  # macOS: launchd already provides an agent (SSH_AUTH_SOCK is always set);
+  # just load the keys whose passphrases are stored in the keychain.
+  ssh-add -q --apple-load-keychain 2>/dev/null
+elif [[ -z "$SSH_AUTH_SOCK" ]]; then
+  # Linux: reuse one agent across logins instead of spawning one per shell.
+  _agent_env="$HOME/.ssh/agent.env"
+  [[ -f "$_agent_env" ]] && source "$_agent_env" >/dev/null
+  ssh-add -l >/dev/null 2>&1
+  if [[ $? -ge 2 ]]; then  # 2 = agent unreachable; 0/1 = agent alive
+    mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
+    ssh-agent -s | sed '/^echo/d' > "$_agent_env"
+    source "$_agent_env" >/dev/null
+  fi
+  [[ -f "$HOME/.ssh/id_ed25519" ]] && ssh-add -q "$HOME/.ssh/id_ed25519" 2>/dev/null
+  unset _agent_env
 fi
 
 ### --- TMUX AUTO-START --- ###
-# 1. Check if TMUX is installed
-# 2. Check if we are NOT already inside a TMUX session ($TMUX is empty)
-# 3. Check if we are in an interactive shell
-if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -n "$PS1" ]; then
-    # Attach to a session named "main" if it exists, otherwise create it
-    exec tmux new-session -A -s main
+# Attach interactive shells to a session named "main" (created on demand).
+# Skipped inside tmux itself and in VS Code's integrated terminal, where a
+# shared session is more confusing than helpful.
+if command -v tmux >/dev/null 2>&1 \
+  && [[ -o interactive ]] \
+  && [[ -z "$TMUX" ]] \
+  && [[ "${TERM_PROGRAM:-}" != "vscode" ]]; then
+  exec tmux new-session -A -s main
 fi
-
