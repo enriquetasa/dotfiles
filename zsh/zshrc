@@ -6,8 +6,9 @@ HISTORY_IGNORE="(ls|cd|pwd|exit|clear|history|fg|bg|jobs)"
 setopt EXTENDED_HISTORY          # write the history file in the ":start:elapsed;command" format.
 setopt HIST_REDUCE_BLANKS        # remove superfluous blanks before recording entry.
 setopt SHARE_HISTORY             # share history between all sessions.
-setopt HIST_IGNORE_ALL_DUPS      # delete old recorded entry if new entry is a duplicate.
-setopt COMPLETE_ALIASES
+setopt HIST_FIND_NO_DUPS         # keep every run in the file (so usage can be counted), but show each command once when searching.
+# No COMPLETE_ALIASES: aliases expand before completion, so Oh My Zsh git aliases
+# (gco, gsw, grbi...) complete branch names like the git command they stand for.
 
 # Oh My Zsh (optional until first install)
 plugins=(
@@ -48,7 +49,13 @@ _dotfiles_editor() {
 }
 
 zshrc() { _dotfiles_editor ~/.zshrc; }
-vimrc() { _dotfiles_editor "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/init.vim"; }
+# Neovim config is LazyVim (init.lua); fall back to init.vim for older setups.
+# Opens from the config dir so file pickers (<leader><space>) search the config.
+vimrc() {
+  local dir="${XDG_CONFIG_HOME:-$HOME/.config}/nvim" init="init.lua"
+  [[ -f "$dir/$init" ]] || init="init.vim"
+  ( cd "$dir" && _dotfiles_editor "$init" )
+}
 
 if command -v nvim >/dev/null 2>&1; then
   alias vi="nvim"
@@ -57,7 +64,8 @@ elif command -v vim >/dev/null 2>&1; then
   alias vi="vim"
 fi
 
-alias venv="echo 'layout python3' > .envrc && direnv allow"
+# Add `layout python3` to .envrc (appending, never overwriting) and allow it
+alias venv="grep -qs 'layout python' .envrc || echo 'layout python3' >> .envrc; direnv allow"
 
 # Editor (use whatever nvim is on PATH)
 if command -v nvim >/dev/null 2>&1; then
@@ -92,6 +100,59 @@ fi
 if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init - zsh)"
 fi
+
+# Navigation
+cdpath=(~/CODE)                                   # `cd persephone` (or just `persephone`, auto_cd is on) from anywhere
+dot() { cd "${${:-$HOME/.zshrc}:A:h:h}"; }        # this dotfiles repo, wherever it is cloned (via the ~/.zshrc symlink)
+alias reload='exec zsh'
+setopt CORRECT                                    # offer to fix mistyped commands ("cladue" -> "claude")
+
+# clone repo | org/repo | full URL | several at once; cd's into it when given one.
+# Bare repo names use $GH_DEFAULT_ORG (default: oees).
+clone() {
+  local spec url
+  for spec in "$@"; do
+    case $spec in
+      *:*) url=$spec ;;
+      */*) url="git@github.com:${spec%.git}.git" ;;
+      *)   url="git@github.com:${GH_DEFAULT_ORG:-oees}/${spec%.git}.git" ;;
+    esac
+    git clone "$url" || return
+  done
+  (( $# == 1 )) && cd "${${1:t}%.git}"
+}
+
+# Move the newest file or folder in ~/Downloads here: `grab`, or `grab new-name`
+grab() {
+  local f=(~/Downloads/*(om[1]N))
+  [[ -n $f ]] || { echo "~/Downloads is empty"; return 1; }
+  mv -i "$f" "./${1:-${f:t}}"
+}
+
+# Python
+alias lint='ruff check --fix . && ruff format .'
+alias va='source .venv/bin/activate'
+
+# Keys and secrets
+randhex()   { openssl rand -hex "${1:-16}"; }             # randhex [bytes]
+fernetkey() { openssl rand -base64 32 | tr '+/' '-_'; }   # url-safe 32-byte key, the cryptography.Fernet format
+if command -v pbcopy >/dev/null 2>&1; then
+  pubkey() { pbcopy < ~/.ssh/${1:-github}.pub && echo "copied ${1:-github}.pub"; }
+fi
+
+# tmux: `ta` attaches to the last session, `ta name` to a specific one
+ta() { if (( $# )); then tmux attach -t "$1"; else tmux attach; fi; }
+alias tl='tmux ls'
+alias tn='tmux new -s'
+
+# Tools
+alias dstart='colima start --cpu 4 --memory 8'
+alias dstop='colima stop'
+alias sb='npx supabase'
+alias bup='brew update && brew upgrade && brew cleanup'
+alias clc='claude --continue'
+alias clr='claude --resume'
+alias myip='curl -4 -s ifconfig.me; echo'
 
 # Git repo-archaeology helpers
 alias what_changed="git log --format=format: --name-only --since='1 year ago' | sort | uniq -c | sort -nr | head -20"
