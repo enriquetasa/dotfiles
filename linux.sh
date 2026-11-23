@@ -58,8 +58,9 @@ install_nerd_font() {
 read -r -p "Press ENTER to install CLI tooling"
 sudo apt update
 sudo apt upgrade -y
+# npm and ruby-full let Mason install the LSPs and formatters the Neovim config uses.
 sudo apt install -y git tmux python3 direnv python3-pip python3-venv \
-  zsh nodejs golang postgresql nginx curl build-essential \
+  zsh nodejs npm ruby-full golang postgresql nginx curl build-essential \
   ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
   fzf unzip zip fontconfig
 # thefuck is not packaged on newer Debian/Ubuntu; try apt, then pip, without failing setup.
