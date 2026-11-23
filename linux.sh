@@ -19,6 +19,28 @@ backup_and_link() {
   ln -s "$src" "$dst"
 }
 
+# Neovim from the official release build: LazyVim needs 0.11.2+, and Debian/Ubuntu
+# LTS packages are older than that.
+install_neovim() {
+  local arch
+  case "$(uname -m)" in
+    x86_64) arch="x86_64" ;;
+    aarch64 | arm64) arch="arm64" ;;
+    *)
+      log "No Neovim release build for $(uname -m); install Neovim 0.11.2+ yourself."
+      return
+      ;;
+  esac
+  local tmp
+  tmp="$(mktemp -d)"
+  wget -qO "$tmp/nvim.tar.gz" \
+    "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${arch}.tar.gz"
+  sudo rm -rf "/opt/nvim-linux-${arch}"
+  sudo tar -C /opt -xzf "$tmp/nvim.tar.gz"
+  sudo ln -sfn "/opt/nvim-linux-${arch}/bin/nvim" /usr/local/bin/nvim
+  rm -rf "$tmp"
+}
+
 # Install JetBrainsMono Nerd Font into the user font dir.
 install_nerd_font() {
   local font_dir="$HOME/.local/share/fonts"
@@ -70,7 +92,7 @@ log "Oh My Zsh installed and zsh configured"
 
 # Neovim environment + Nerd Font
 read -r -p "Press ENTER to install the Neovim environment"
-sudo apt install -y neovim
+install_neovim
 install_nerd_font
 mkdir -p "$HOME/.config"
 # Use the dotfiles-tracked config as the single source of truth.
