@@ -31,6 +31,23 @@ ensure_locale() {
   sudo locale-gen en_US.UTF-8
 }
 
+# thefuck: apt where packaged, else pip. Keep it only if it runs: Ubuntu 24.04's
+# package crashes on Python 3.12, and zshrc loads the plugin whenever thefuck exists.
+install_thefuck() {
+  sudo apt install -y thefuck 2>/dev/null \
+    || pip3 install --user thefuck 2>/dev/null \
+    || pip3 install --user --break-system-packages thefuck 2>/dev/null \
+    || true
+  if PATH="$HOME/.local/bin:$PATH" thefuck --version >/dev/null 2>&1; then
+    return
+  fi
+  sudo apt remove -y thefuck >/dev/null 2>&1 || true
+  pip3 uninstall -y thefuck >/dev/null 2>&1 \
+    || pip3 uninstall -y --break-system-packages thefuck >/dev/null 2>&1 \
+    || true
+  log "Skipped thefuck: no build that runs here (install it manually if you want it)."
+}
+
 # Neovim from the official release build: LazyVim needs 0.11.2+, and Debian/Ubuntu
 # LTS packages are older than that.
 install_neovim() {
@@ -75,11 +92,7 @@ sudo apt install -y git tmux python3 direnv python3-pip python3-venv \
   zsh nodejs npm ruby-full golang postgresql nginx curl build-essential \
   ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
   fzf unzip zip fontconfig locales
-# thefuck is not packaged on newer Debian/Ubuntu; try apt, then pip, without failing setup.
-sudo apt install -y thefuck 2>/dev/null \
-  || pip3 install --user thefuck 2>/dev/null \
-  || pip3 install --user --break-system-packages thefuck 2>/dev/null \
-  || log "Skipped thefuck (install it manually if you want it)."
+install_thefuck
 ensure_locale
 backup_and_link "$DIR/git/gitconfig" "$HOME/.gitconfig"
 backup_and_link "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
