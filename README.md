@@ -42,6 +42,8 @@ All of the above (except the seeded `config.local`) are symlinked into your home
 
 After Neovim is installed, the script symlinks `nvim/` to `~/.config/nvim` and runs `nvim --headless "+Lazy! sync" +qa` so [LazyVim](https://www.lazyvim.org/) plugins are installed before your first launch. There is no vim-plug step — this config is pure Lua / lazy.nvim.
 
+Oh My Zsh and the Neovim plugins are cloned over HTTPS during install, so they work before your SSH keys are set up, even though `git/gitconfig` rewrites GitHub URLs to SSH.
+
 ### tmux
 
 `tmux/tmux.conf` is symlinked to `~/.tmux.conf`. `zsh/zshprofile` auto-attaches an interactive shell to a tmux session named `main` (creating it if needed), so new terminals drop straight into tmux. Remove that block in `zsh/zshprofile` if you'd rather start tmux manually.
