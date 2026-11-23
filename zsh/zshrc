@@ -161,5 +161,12 @@ alias where_bugs="git log -i -E --grep='fix|bug|broken' --name-only --format='' 
 alias commit_count="git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c"
 alias firefighting="git log --oneline --since='1 year ago' | grep -iE 'revert|hotfix|emergency|rollback|incident'"
 
+# Disk: check free space and clear out my own stale /tmp files
+alias dfh='df -h / /tmp "$HOME"'
+tmpclean() {
+  find /tmp -xdev -user "$USER" -mtime +1 -print 2>/dev/null
+  read -q "?Delete the above? [y/N] " && echo && find /tmp -xdev -user "$USER" -mtime +1 -delete 2>/dev/null
+}
+
 # Machine-local overrides (PATHs, work config, terminal integrations) — not tracked in the repo
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
