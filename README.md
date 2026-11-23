@@ -20,7 +20,7 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 | Path | Role |
 |------|------|
 | `macos.sh` | macOS bootstrap: Homebrew, CLI tooling, Oh My Zsh, Neovim + Nerd Font, default shell |
-| `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, downloads the Nerd Font manually |
+| `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, with Neovim and the Nerd Font downloaded from their releases |
 | `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
 | `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, `EDITOR`, locale, colors |
 | `zsh/zshprofile` | umask, Homebrew compiler flags, one reusable ssh-agent, tmux auto-attach |
@@ -38,7 +38,7 @@ All of the above (except the seeded `config.local`) are symlinked into your home
 
 **macOS:** [Homebrew](https://brew.sh/) is installed if missing, then `git`, `tmux`, `python3`, `thefuck`, `direnv`, `neovim`, `node`, `ruby`, `fd`, `ripgrep`, `fzf`, and friends.
 
-**Linux:** packages are installed with `apt` (Debian/Ubuntu). For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
+**Linux:** packages are installed with `apt` (Debian/Ubuntu). Neovim comes from the [official release build](https://github.com/neovim/neovim/releases), unpacked into `/opt/nvim-linux-<arch>` and linked as `/usr/local/bin/nvim`, because the Debian/Ubuntu LTS packages are older than LazyVim allows. For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
 
 After Neovim is installed, the script symlinks `nvim/` to `~/.config/nvim` and runs `nvim --headless "+Lazy! sync" +qa` so [LazyVim](https://www.lazyvim.org/) plugins are installed before your first launch. There is no vim-plug step — this config is pure Lua / lazy.nvim.
 
@@ -82,7 +82,7 @@ nvim --headless "+Lazy! sync" +qa
 
 **Font (manual):** macOS: `brew install --cask font-jetbrains-mono-nerd-font`. Linux: download `JetBrainsMono.zip` from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases), unpack into `~/.local/share/fonts/`, and run `fc-cache -f`.
 
-Use a recent Neovim (0.9+) — the config is Lua-based and built on LazyVim.
+Use Neovim 0.11.2 or newer — LazyVim refuses to run on older versions.
 
 ## License
 
