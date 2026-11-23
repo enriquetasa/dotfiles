@@ -11,7 +11,7 @@ cd ~/.dotfiles
 ./linux.sh      # on Debian/Ubuntu Linux
 ```
 
-Each script is interactive: it pauses with "Press ENTER" before each stage (Oh My Zsh, package manager, CLI tooling, Neovim, default shell) so you can watch what it does. Existing files at a target path are backed up to `<file>.backup.<timestamp>` before the symlink is created.
+Each script is interactive: it pauses with "Press ENTER" before each stage (Oh My Zsh, package manager, CLI tooling, Neovim, default shell) so you can watch what it does. Existing files at a target path are backed up to `<file>.backup.<timestamp>` before the symlink is created. Re-running a script is safe: links that already point into this repo are left alone.
 
 On the first run the script creates `~/.config/git/config.local` from `git/config.local.example`. **Set your name and email there before committing** — it is intentionally machine-local and not tracked.
 

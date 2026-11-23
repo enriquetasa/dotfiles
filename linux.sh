@@ -7,8 +7,12 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 log() { printf '\n==> %s\n\n' "$1"; }
 
 # Symlink $2 -> $1, backing up anything already at the target.
+# Safe to re-run: a target that already points at $1 is left alone.
 backup_and_link() {
   local src="$1" dst="$2"
+  if [ "$(readlink "$dst" 2>/dev/null)" = "$src" ]; then
+    return
+  fi
   if [ -L "$dst" ] || [ -e "$dst" ]; then
     mv "$dst" "${dst}.backup.$(date +%Y%m%d%H%M%S)"
   fi
@@ -79,5 +83,7 @@ sudo apt autoclean
 
 # Default shell
 read -r -p "Press ENTER to set zsh as the default shell"
-chsh -s "$(command -v zsh)" || true
+if [ "${SHELL:-}" != "$(command -v zsh)" ]; then
+  chsh -s "$(command -v zsh)" || true
+fi
 exec zsh
