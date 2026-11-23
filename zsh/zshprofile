@@ -18,11 +18,17 @@ fi
 
 ### --- SSH & KEY MANAGEMENT --- ###
 
-# Start SSH Agent if not running and add your keys
-# This prevents entering your passphrase for every single git pull/push
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval `ssh-agent -s` > /dev/null
-  ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+# Start one SSH agent and reuse it across logins, so you enter your passphrase once
+# rather than on every git pull/push. Skipped when something already provides an
+# agent (macOS launchd, a desktop keyring, SSH agent forwarding).
+if [[ -z "${SSH_AUTH_SOCK:-}" && -d "$HOME/.ssh" ]]; then
+  export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+  ssh-add -l >/dev/null 2>&1
+  if (( $? == 2 )); then  # 2 = no agent listening on the socket
+    rm -f "$SSH_AUTH_SOCK"
+    eval "$(ssh-agent -s -a "$SSH_AUTH_SOCK")" >/dev/null
+  fi
+  ssh-add -l >/dev/null 2>&1 || ssh-add -q 2>/dev/null  # load default keys if none are loaded
 fi
 
 ### --- TMUX AUTO-START --- ###

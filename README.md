@@ -23,7 +23,7 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 | `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, downloads the Nerd Font manually |
 | `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
 | `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, `EDITOR`, locale, colors |
-| `zsh/zshprofile` | umask, Homebrew compiler flags, ssh-agent bootstrap, tmux auto-attach |
+| `zsh/zshprofile` | umask, Homebrew compiler flags, one reusable ssh-agent, tmux auto-attach |
 | `git/gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` |
 | `git/config.local.example` | Template for your machine-local Git identity |
 | `git/git_commit_template.txt` | Commit message template |
@@ -91,4 +91,4 @@ Copyright © 2026 Enrique Tasa. Licensed under the **GNU General Public License 
 - **sudo** where the package manager needs it (Linux; `chsh` may prompt for your password).
 - A network connection for package managers, Oh My Zsh, LazyVim plugin sync, and the font download.
 - You still **select the installed Nerd Font** in your terminal emulator's settings — the script can't flip that for every app.
-- **SSH keys / Git hosting auth** are yours to configure; this repo only rewrites `https://github.com/` to `ssh://git@github.com/` in Git config.
+- **SSH keys / Git hosting auth** are yours to configure; this repo only rewrites `https://github.com/` to `ssh://git@github.com/` in Git config. On Linux, `zsh/zshprofile` starts one ssh-agent at `~/.ssh/agent.sock` and reuses it across logins when nothing else provides an agent.
