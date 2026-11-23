@@ -19,16 +19,8 @@ backup_and_link() {
   ln -s "$src" "$dst"
 }
 
-read -r -p "Press ENTER to install Oh My Zsh"
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
-backup_and_link "$DIR/zsh/zshenv" "$HOME/.zshenv"
-backup_and_link "$DIR/zsh/zshprofile" "$HOME/.zprofile"
-backup_and_link "$DIR/zsh/zshrc" "$HOME/.zshrc"
-log "Oh My Zsh installed and zsh configured"
-
-# Homebrew
+# Homebrew first: its installer also installs the Xcode Command Line Tools,
+# which provide the git that Oh My Zsh's installer needs.
 read -r -p "Press ENTER to install Homebrew"
 if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -48,6 +40,17 @@ if [ ! -f "$HOME/.config/git/config.local" ]; then
   log "Created ~/.config/git/config.local — set your name and email there before committing."
 fi
 log "git, tmux and Python configured"
+
+read -r -p "Press ENTER to install Oh My Zsh"
+backup_and_link "$DIR/zsh/zshenv" "$HOME/.zshenv"
+backup_and_link "$DIR/zsh/zshprofile" "$HOME/.zprofile"
+backup_and_link "$DIR/zsh/zshrc" "$HOME/.zshrc"
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  # KEEP_ZSHRC: leave the symlinked ~/.zshrc alone.
+  KEEP_ZSHRC=yes \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+log "Oh My Zsh installed and zsh configured"
 
 # Neovim environment + Nerd Font
 read -r -p "Press ENTER to install the Neovim environment"
