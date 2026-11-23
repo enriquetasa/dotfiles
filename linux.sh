@@ -19,6 +19,18 @@ backup_and_link() {
   ln -s "$src" "$dst"
 }
 
+# zsh/zshenv sets LC_ALL=en_US.UTF-8, which warns on every shell if the locale is missing.
+ensure_locale() {
+  if locale -a 2>/dev/null | grep -qiE '^en_US\.utf-?8$'; then
+    return
+  fi
+  # Debian generates what /etc/locale.gen lists; Ubuntu also takes the name as an argument.
+  if [ -f /etc/locale.gen ]; then
+    sudo sed -i 's/^# *\(en_US\.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+  fi
+  sudo locale-gen en_US.UTF-8
+}
+
 # Neovim from the official release build: LazyVim needs 0.11.2+, and Debian/Ubuntu
 # LTS packages are older than that.
 install_neovim() {
@@ -62,12 +74,13 @@ sudo apt upgrade -y
 sudo apt install -y git tmux python3 direnv python3-pip python3-venv \
   zsh nodejs npm ruby-full golang postgresql nginx curl build-essential \
   ripgrep wget ca-certificates gnupg lsb-release make cmake fd-find \
-  fzf unzip zip fontconfig
+  fzf unzip zip fontconfig locales
 # thefuck is not packaged on newer Debian/Ubuntu; try apt, then pip, without failing setup.
 sudo apt install -y thefuck 2>/dev/null \
   || pip3 install --user thefuck 2>/dev/null \
   || pip3 install --user --break-system-packages thefuck 2>/dev/null \
   || log "Skipped thefuck (install it manually if you want it)."
+ensure_locale
 backup_and_link "$DIR/git/gitconfig" "$HOME/.gitconfig"
 backup_and_link "$DIR/git/git_commit_template.txt" "$HOME/.git_commit_template"
 backup_and_link "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
