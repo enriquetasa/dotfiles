@@ -64,19 +64,19 @@ If you don't want to run the full script, symlink the pieces you want:
 ```bash
 DOTFILES="$PWD"   # run from the repo root
 
-ln -sf "$DOTFILES/zsh/zshenv"    ~/.zshenv
-ln -sf "$DOTFILES/zsh/zshprofile" ~/.zprofile
-ln -sf "$DOTFILES/zsh/zshrc"     ~/.zshrc
+ln -sfn "$DOTFILES/zsh/zshenv"    ~/.zshenv
+ln -sfn "$DOTFILES/zsh/zshprofile" ~/.zprofile
+ln -sfn "$DOTFILES/zsh/zshrc"     ~/.zshrc
 
-ln -sf "$DOTFILES/git/gitconfig"             ~/.gitconfig
-ln -sf "$DOTFILES/git/git_commit_template.txt" ~/.git_commit_template
+ln -sfn "$DOTFILES/git/gitconfig"             ~/.gitconfig
+ln -sfn "$DOTFILES/git/git_commit_template.txt" ~/.git_commit_template
 mkdir -p ~/.config/git
 cp "$DOTFILES/git/config.local.example" ~/.config/git/config.local
 # edit ~/.config/git/config.local — set name and email
 
-ln -sf "$DOTFILES/tmux/tmux.conf" ~/.tmux.conf
+ln -sfn "$DOTFILES/tmux/tmux.conf" ~/.tmux.conf
 
-ln -sf "$DOTFILES/nvim" ~/.config/nvim
+ln -sfn "$DOTFILES/nvim" ~/.config/nvim   # -n: replace an existing link instead of nesting inside it
 nvim --headless "+Lazy! sync" +qa
 ```
 
