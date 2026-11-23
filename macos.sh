@@ -53,8 +53,9 @@ backup_and_link "$DIR/zsh/zshenv" "$HOME/.zshenv"
 backup_and_link "$DIR/zsh/zshprofile" "$HOME/.zprofile"
 backup_and_link "$DIR/zsh/zshrc" "$HOME/.zshrc"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  # KEEP_ZSHRC: leave the symlinked ~/.zshrc alone.
-  KEEP_ZSHRC=yes \
+  # KEEP_ZSHRC: leave the symlinked ~/.zshrc alone. GIT_CONFIG_GLOBAL=/dev/null: clone
+  # over HTTPS, since gitconfig rewrites github.com to SSH and keys may not be set up yet.
+  KEEP_ZSHRC=yes GIT_CONFIG_GLOBAL=/dev/null \
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 log "Oh My Zsh installed and zsh configured"
@@ -66,8 +67,9 @@ brew install --cask font-jetbrains-mono-nerd-font
 mkdir -p "$HOME/.config"
 # Use the dotfiles-tracked config as the single source of truth.
 backup_and_link "$DIR/nvim" "$HOME/.config/nvim"
-# Install/sync plugins headlessly so the first real launch is ready to go.
-nvim --headless "+Lazy! sync" +qa || true
+# Install/sync plugins headlessly so the first real launch is ready to go
+# (over HTTPS, for the same reason as Oh My Zsh above).
+GIT_CONFIG_GLOBAL=/dev/null nvim --headless "+Lazy! sync" +qa || true
 log "Neovim installed and config symlinked. Set 'JetBrainsMono Nerd Font' as your terminal font."
 
 # Default shell (zsh is already the default on macOS 10.15+)
