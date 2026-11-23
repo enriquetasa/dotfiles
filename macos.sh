@@ -25,6 +25,13 @@ read -r -p "Press ENTER to install Homebrew"
 if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
+# A fresh install is not on this script's PATH yet: load it (Apple Silicon, then Intel).
+for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  if [ -x "$brew_bin" ]; then
+    eval "$("$brew_bin" shellenv)"
+    break
+  fi
+done
 log "Homebrew ready"
 
 # git, tmux, python3
