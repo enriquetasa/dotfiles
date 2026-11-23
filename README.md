@@ -38,7 +38,7 @@ All of the above (except the seeded `config.local`) are symlinked into your home
 
 **macOS:** [Homebrew](https://brew.sh/) is installed if missing, then `git`, `tmux`, `python3`, `thefuck`, `direnv`, `neovim`, `node`, `ruby`, `fd`, `ripgrep`, `fzf`, and friends.
 
-**Linux:** packages are installed with `apt` (Debian/Ubuntu), including `npm` and `ruby-full` so Mason can install the LSPs and formatters the Neovim config uses. Neovim comes from the [official release build](https://github.com/neovim/neovim/releases), unpacked into `/opt/nvim-linux-<arch>` and linked as `/usr/local/bin/nvim`, because the Debian/Ubuntu LTS packages are older than LazyVim allows. For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
+**Linux:** packages are installed with `apt` (Debian/Ubuntu), including `npm` and `ruby-full` so Mason can install the LSPs and formatters the Neovim config uses, and the `en_US.UTF-8` locale that `zsh/zshenv` sets is generated if missing. Neovim comes from the [official release build](https://github.com/neovim/neovim/releases), unpacked into `/opt/nvim-linux-<arch>` and linked as `/usr/local/bin/nvim`, because the Debian/Ubuntu LTS packages are older than LazyVim allows. For other distros, install the equivalent packages yourself, then re-run the script — the symlinking steps still work.
 
 After Neovim is installed, the script symlinks `nvim/` to `~/.config/nvim` and runs `nvim --headless "+Lazy! sync" +qa` so [LazyVim](https://www.lazyvim.org/) plugins are installed before your first launch. There is no vim-plug step — this config is pure Lua / lazy.nvim.
 
