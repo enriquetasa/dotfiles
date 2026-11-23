@@ -67,15 +67,6 @@ fi
 # Add `layout python3` to .envrc (appending, never overwriting) and allow it
 alias venv="grep -qs 'layout python' .envrc || echo 'layout python3' >> .envrc; direnv allow"
 
-# Editor (use whatever nvim is on PATH)
-if command -v nvim >/dev/null 2>&1; then
-  export EDITOR="nvim"
-  export VISUAL="nvim"
-elif command -v vim >/dev/null 2>&1; then
-  export EDITOR="vim"
-  export VISUAL="vim"
-fi
-
 # VS Code: PATH shim when present; else macOS app bundle
 if ! command -v code >/dev/null 2>&1; then
   if [[ "${OSTYPE}" == darwin* ]] && [[ -d "/Applications/Visual Studio Code.app" ]]; then

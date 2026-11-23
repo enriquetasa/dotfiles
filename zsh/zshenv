@@ -8,9 +8,6 @@ elif [[ -f "/usr/local/bin/brew" ]]; then
 fi
 
 # Set other essential environment variables
-export EDITOR="nvim"
-export VISUAL="$EDITOR"
-
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
@@ -42,6 +39,17 @@ export PYTHONDONTWRITEBYTECODE=1
 # Prepend user bin dirs when they exist (no-ops on machines without them)
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 [[ -d "$HOME/.gem/bin" ]] && export PATH="$HOME/.gem/bin:$PATH"
+
+### --- EDITOR --- ###
+# First of nvim / vim / vi that is installed, so git and friends never get a missing editor
+if (( $+commands[nvim] )); then
+  export EDITOR="nvim"
+elif (( $+commands[vim] )); then
+  export EDITOR="vim"
+else
+  export EDITOR="vi"
+fi
+export VISUAL="$EDITOR"
 
 ### --- COLORS & THEMES --- ###
 
