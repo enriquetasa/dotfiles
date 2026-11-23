@@ -20,17 +20,19 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ANALYTICS=1
 
 ### --- DYNAMIC HOMEBREW PYTHON PATHING --- ###
-# 1. Locate the latest Homebrew Python version folder
-# We look for the newest directory matching 'python@3.*'
-latest_python_dir=$(ls -d /opt/homebrew/opt/python@3.* 2>/dev/null | sort -V | tail -1)
-
-if [[ -n "$latest_python_dir" ]]; then
-    # Add the bin folder to PATH
-    export PATH="$latest_python_dir/bin:$PATH"
-    
-    # Set global pointers to the specific binaries inside that version folder
-    export PYTHON_GLOBAL="$latest_python_dir/bin/python3"
-    export PIP_GLOBAL="$latest_python_dir/bin/pip3"
+# Put the newest Homebrew python@3.x first on PATH. HOMEBREW_PREFIX comes from
+# `brew shellenv` above, so this covers Apple Silicon and Intel and skips Linux.
+# Glob qualifiers: N = no error when nothing matches, -/ = directories (opt/
+# entries are symlinks), n + On = newest version first (3.13 before 3.9).
+if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+  brew_pythons=( "$HOMEBREW_PREFIX"/opt/python@3.*(N-/nOn) )
+  if (( ${#brew_pythons} )); then
+    export PATH="${brew_pythons[1]}/bin:$PATH"
+    # Global pointers to the binaries inside that version folder
+    export PYTHON_GLOBAL="${brew_pythons[1]}/bin/python3"
+    export PIP_GLOBAL="${brew_pythons[1]}/bin/pip3"
+  fi
+  unset brew_pythons
 fi
 
 # Python: Prevent Python from writing .pyc files (cleaner folders)
