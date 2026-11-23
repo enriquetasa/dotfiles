@@ -23,7 +23,7 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 | `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, downloads the Nerd Font manually |
 | `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
 | `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, locale, colors |
-| `zsh/zshprofile` | umask, compiler flags, ssh-agent bootstrap, tmux auto-attach |
+| `zsh/zshprofile` | umask, Homebrew compiler flags, ssh-agent bootstrap, tmux auto-attach |
 | `git/gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` |
 | `git/config.local.example` | Template for your machine-local Git identity |
 | `git/git_commit_template.txt` | Commit message template |

@@ -8,14 +8,12 @@ limit core 0
 
 ### --- COMPILER & BUILD FLAGS--- ###
 
-# Help compilers (C/C++, Rust, Go) find Homebrew-installed headers and libraries
-if [[ $(uname -m) == 'arm64' ]]; then
-    export LDFLAGS="-L/opt/homebrew/lib"
-    export CPPFLAGS="-I/opt/homebrew/include"
-    export PKG_CONFIG_PATH="/opt/homebrew/opt/readline/lib/pkgconfig"
-else
-    export LDFLAGS="-L/usr/local/lib"
-    export CPPFLAGS="-I/usr/local/include"
+# Help compilers (C/C++, Rust, Go) find Homebrew-installed headers and libraries.
+# HOMEBREW_PREFIX is set by zshenv on Macs with Homebrew; Linux needs none of this.
+if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+    export LDFLAGS="-L$HOMEBREW_PREFIX/lib"
+    export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
+    export PKG_CONFIG_PATH="$HOMEBREW_PREFIX/opt/readline/lib/pkgconfig"
 fi
 
 ### --- SSH & KEY MANAGEMENT --- ###
