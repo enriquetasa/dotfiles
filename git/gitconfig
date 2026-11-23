@@ -10,3 +10,6 @@
 	insteadOf = https://github.com/
 [rebase]
 	autosquash = true
+	autoStash = true
+[help]
+	autocorrect = prompt
