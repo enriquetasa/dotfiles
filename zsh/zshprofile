@@ -34,8 +34,8 @@ fi
 ### --- TMUX AUTO-START --- ###
 # 1. Check if TMUX is installed
 # 2. Check if we are NOT already inside a TMUX session ($TMUX is empty)
-# 3. Check if we are in an interactive shell
-if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -n "$PS1" ]; then
+# 3. Check if stdin and stdout are a real terminal (not only an interactive shell)
+if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -t 0 ] && [ -t 1 ]; then
     # Attach to a session named "main" if it exists, otherwise create it
     exec tmux new-session -A -s main
 fi
