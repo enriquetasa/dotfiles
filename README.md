@@ -46,7 +46,7 @@ Oh My Zsh and the Neovim plugins are cloned over HTTPS during install, so they w
 
 ### tmux
 
-`tmux/tmux.conf` is symlinked to `~/.tmux.conf`. `zsh/zshprofile` auto-attaches an interactive shell to a tmux session named `main` (creating it if needed), so new terminals drop straight into tmux. Remove that block in `zsh/zshprofile` if you'd rather start tmux manually.
+`tmux/tmux.conf` is symlinked to `~/.tmux.conf`. `zsh/zshprofile` auto-attaches a login shell on a real terminal to a tmux session named `main` (creating it if needed), so new terminals drop straight into tmux. Shells without a terminal (`ssh host cmd`, editor and app remote connections) skip it. Remove that block in `zsh/zshprofile` if you'd rather start tmux manually.
 
 ### Terminal font (JetBrains Mono Nerd Font)
 
