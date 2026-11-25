@@ -35,6 +35,16 @@ fi
 # Python: Prevent Python from writing .pyc files (cleaner folders)
 export PYTHONDONTWRITEBYTECODE=1
 
+### --- TEMP FILES (Linux) --- ###
+# On the dev droplet /tmp is a small RAM disk (7.9G, about 1M files) that agents
+# and test suites filled more than once. Keep temp files on the main disk instead.
+# macOS sets its own per-user TMPDIR, so leave it alone there.
+if [[ "$OSTYPE" == linux* ]]; then
+  export TMPDIR="$HOME/.tmp/general"
+  export CLAUDE_CODE_TMPDIR="$HOME/.tmp/claude"
+  [[ -d "$TMPDIR" && -d "$CLAUDE_CODE_TMPDIR" ]] || mkdir -p -m 700 "$HOME/.tmp" "$TMPDIR" "$CLAUDE_CODE_TMPDIR"
+fi
+
 ### --- USER-LOCAL BINARIES --- ###
 # Prepend user bin dirs when they exist (no-ops on machines without them)
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"

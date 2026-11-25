@@ -1,0 +1,8 @@
+[Unit]
+Description=Delete stale temp files by age and warn when disks fill up
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/janitor clean
+Nice=10
+IOSchedulingClass=idle
