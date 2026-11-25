@@ -159,5 +159,11 @@ tmpclean() {
   read -q "?Delete the above? [y/N] " && echo && find /tmp -xdev -user "$USER" -mtime +1 -delete 2>/dev/null
 }
 
+# Janitor warnings (Linux): show them when a disk or /tmp is filling up
+if [[ "$OSTYPE" == linux* && -s "${XDG_STATE_HOME:-$HOME/.local/state}/janitor/warnings" ]]; then
+  print -P "%F{yellow}janitor warnings:%f"
+  sed 's/^/  /' "${XDG_STATE_HOME:-$HOME/.local/state}/janitor/warnings"
+fi
+
 # Machine-local overrides (PATHs, work config, terminal integrations) — not tracked in the repo
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

@@ -70,6 +70,22 @@ install_nerd_font() {
   fc-cache -f >/dev/null
 }
 
+# Janitor: hourly age-based cleanup of temp files, weekly report, disk warnings.
+# Linger keeps the user timers running when nobody is logged in.
+install_janitor() {
+  mkdir -p "$HOME/.local/bin" "$HOME/.config/systemd/user"
+  backup_and_link "$DIR/janitor/janitor.sh" "$HOME/.local/bin/janitor"
+  local unit
+  for unit in "$DIR"/janitor/systemd/*; do
+    backup_and_link "$unit" "$HOME/.config/systemd/user/$(basename "$unit")"
+  done
+  loginctl enable-linger "$USER" \
+    || log "Could not enable linger: the janitor only runs while you are logged in."
+  systemctl --user daemon-reload
+  systemctl --user enable --now janitor.timer janitor-report.timer
+  log "Janitor installed. Preview a run with: janitor clean --dry-run"
+}
+
 # CLI tooling first: Oh My Zsh's installer needs zsh, git and curl to exist.
 read -r -p "Press ENTER to install CLI tooling"
 sudo apt update
@@ -91,6 +107,9 @@ read -r -p "Press ENTER to install the Neovim environment"
 install_neovim
 install_nerd_font
 link_neovim_config
+
+read -r -p "Press ENTER to install the janitor timers"
+install_janitor
 
 # Cleanup
 read -r -p "Press ENTER to clean up apt"

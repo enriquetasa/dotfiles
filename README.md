@@ -11,7 +11,7 @@ cd ~/.dotfiles
 ./linux.sh      # on Debian/Ubuntu Linux
 ```
 
-Each script is interactive: it pauses with "Press ENTER" before each stage so you can watch what it does. macOS: Homebrew, CLI tooling, Oh My Zsh, Neovim, default shell. Linux: CLI tooling, Oh My Zsh, Neovim, apt cleanup, default shell. Existing files at a target path are backed up to `<file>.backup.<timestamp>` before the symlink is created. Re-running a script is safe: links that already point into this repo are left alone.
+Each script is interactive: it pauses with "Press ENTER" before each stage so you can watch what it does. macOS: Homebrew, CLI tooling, Oh My Zsh, Neovim, default shell. Linux: CLI tooling, Oh My Zsh, Neovim, janitor timers, apt cleanup, default shell. Existing files at a target path are backed up to `<file>.backup.<timestamp>` before the symlink is created. Re-running a script is safe: links that already point into this repo are left alone.
 
 On the first run the script creates `~/.config/git/config.local` from `git/config.local.example`. **Set your name and email there before committing** — it is intentionally machine-local and not tracked.
 
@@ -25,6 +25,9 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 | `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
 | `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, `EDITOR`, locale, colors |
 | `zsh/zshprofile` | umask, Homebrew compiler flags, one reusable ssh-agent, tmux auto-attach |
+| `janitor/janitor.sh` | Linux: hourly age-based cleanup of temp files, disk warnings, weekly report; linked to `~/.local/bin/janitor` |
+| `janitor/systemd/` | User timers for the janitor (hourly clean, Monday report); linked to `~/.config/systemd/user/` |
+| `janitor/test_janitor.sh` | Tests for the janitor against a fake folder tree |
 | `git/gitconfig` | Shared Git settings; **identity** lives in `~/.config/git/config.local` |
 | `git/config.local.example` | Template for your machine-local Git identity |
 | `git/git_commit_template.txt` | Commit message template |
@@ -84,6 +87,25 @@ nvim --headless "+Lazy! sync" +qa
 **Font (manual):** macOS: `brew install --cask font-jetbrains-mono-nerd-font`. Linux: download `JetBrainsMono.zip` from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases), unpack into `~/.local/share/fonts/`, and run `fc-cache -f`.
 
 Use Neovim 0.11.2 or newer — LazyVim refuses to run on older versions.
+
+## Janitor (Linux)
+
+On Linux, `zsh/zshenv` sends temp files to the main disk (`TMPDIR=~/.tmp/general`, `CLAUDE_CODE_TMPDIR=~/.tmp/claude`) instead of `/tmp`, which is often a small RAM disk with a file limit. A user timer runs `janitor clean` every hour:
+
+| What | Deleted after this long untouched |
+|------|-----------------------------------|
+| `~/.tmp/general` and your own top-level entries in `/tmp` | 2 days |
+| Claude Code session scratch (`<claude dir>/<project>/<session>`) | 7 days |
+
+"Untouched" means that nothing in the entry changed. The janitor never deletes paths that a process has open or works in, sockets or folders that hold one, daemon folders such as `/tmp/tmux-*`, or files that other users own. If the disk passes 80% (space or inodes), or `/tmp` passes 70%, it writes `~/.local/state/janitor/warnings`, and interactive shells show them. Every Monday it writes `~/.local/state/janitor/report.txt`, which lists worktrees, Docker containers and servers that listen on all interfaces. The janitor only reports these and never deletes them.
+
+```bash
+janitor clean --dry-run                 # show what the next run would delete
+journalctl --user -u janitor -n 50      # what past runs deleted or skipped
+./janitor/test_janitor.sh               # tests against a fake folder tree
+```
+
+Change the ages and limits with `JANITOR_GENERAL_DAYS`, `JANITOR_SCRATCH_DAYS`, `JANITOR_DISK_PCT` and `JANITOR_TMP_PCT` (set them in the service with `systemctl --user edit janitor`).
 
 ## License
 

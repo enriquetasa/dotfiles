@@ -1,0 +1,8 @@
+[Unit]
+Description=Write the weekly janitor report (worktrees, containers, open servers)
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/janitor report
+Nice=10
+IOSchedulingClass=idle
