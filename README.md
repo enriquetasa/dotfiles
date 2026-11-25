@@ -21,6 +21,7 @@ On the first run the script creates `~/.config/git/config.local` from `git/confi
 |------|------|
 | `macos.sh` | macOS bootstrap: Homebrew, CLI tooling, Oh My Zsh, Neovim + Nerd Font, default shell |
 | `linux.sh` | Debian/Ubuntu (`apt`) bootstrap: same flow, with Neovim and the Nerd Font downloaded from their releases |
+| `common.sh` | Stages both bootstraps share (symlinking, Git identity seed, Oh My Zsh, Neovim plugin sync, default shell); sourced, not run |
 | `zsh/zshrc` | Zsh + Oh My Zsh; plugins gated on whether `direnv` / `thefuck` exist |
 | `zsh/zshenv` | PATH (Homebrew), dynamic Homebrew-Python pathing, `EDITOR`, locale, colors |
 | `zsh/zshprofile` | umask, Homebrew compiler flags, one reusable ssh-agent, tmux auto-attach |
